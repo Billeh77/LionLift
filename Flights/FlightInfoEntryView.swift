@@ -1,12 +1,13 @@
 import SwiftUI
 
 enum NavigationDestination: Hashable {
-    case scheduledRide(flightInfo: FlightInfo)
+    case scheduledRide(flightInfo: FlightInfo, flightDate: String) // Include flightDate here
     case manualEntry
 }
 
 struct FlightInfoEntryView: View {
     @State private var flightNumber: String = ""
+    @State private var flightDate: String = ""
     @State private var numberOfPassengers = 1
     @State private var luggageQuantity = 1
     @State private var flightInfo: FlightInfo?
@@ -21,6 +22,11 @@ struct FlightInfoEntryView: View {
                 Form {
                     Section {
                         TextField("Flight Number", text: $flightNumber)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .keyboardType(.numbersAndPunctuation)
+                            .padding(.vertical, 8) // Additional padding to match UI
+                        
+                        TextField("Flight Date", text: $flightDate)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .keyboardType(.numbersAndPunctuation)
                             .padding(.vertical, 8) // Additional padding to match UI
@@ -74,8 +80,8 @@ struct FlightInfoEntryView: View {
             .navigationBarTitleDisplayMode(.inline) // Inline title with back button
             .navigationDestination(for: NavigationDestination.self) { destination in
                 switch destination {
-                case .scheduledRide(let flightInfo):
-                    ScheduledRideView(flightInfo: flightInfo)
+                case .scheduledRide(let flightInfo, let flightDate):
+                    ScheduledRideView(flightInfo: flightInfo, flightDate: flightDate)
                 case .manualEntry:
                     ManualFlightEntryView()
                 }
@@ -92,7 +98,7 @@ struct FlightInfoEntryView: View {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("ef460b276amshd00a183128141d2p10cb3ejsn6c9e27fcf916", forHTTPHeaderField: "x-rapidapi-key")
+        request.addValue("c1f1bfc7e1msh21da0f3e0296bd5p1c5466jsn34a8550d2a3c", forHTTPHeaderField: "x-rapidapi-key")
         request.addValue("flightera-flight-data.p.rapidapi.com", forHTTPHeaderField: "x-rapidapi-host")
         
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -121,7 +127,7 @@ struct FlightInfoEntryView: View {
                     // Check if there's at least one item in the array
                     if let firstFlightInfo = flightInfoArray.first {
                         self.flightInfo = firstFlightInfo
-                        navigationPath.append(NavigationDestination.scheduledRide(flightInfo: firstFlightInfo))
+                        navigationPath.append(NavigationDestination.scheduledRide(flightInfo: firstFlightInfo, flightDate: flightDate))
                     } else {
                         showError = true
                         navigationPath.append(NavigationDestination.manualEntry)
