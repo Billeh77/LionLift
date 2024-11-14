@@ -9,7 +9,22 @@ import SwiftUI
 
 struct ProfileView: View {
     var body: some View {
-        Text("Profile code goes here")
+        
+        NavigationStack {
+            Text("Profile code goes here")
+            NavigationLink {
+                ProfileSettingsView()
+            } label: {
+                Text("Profile Settings")
+            }
+            
+            NavigationLink(destination: ChangePasswordView()) {
+                                Text("Change Password")
+                            }
+            NavigationLink(destination: CustomerSupportView()) {
+                                Text("Customer Support")
+                            }
+        }
     }
 }
 
