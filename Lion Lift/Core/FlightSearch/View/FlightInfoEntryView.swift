@@ -1,141 +1,217 @@
 import SwiftUI
 
-enum NavigationDestination: Hashable {
-    case scheduledRide(flightInfo: FlightInfo, flightDate: String) // Include flightDate here
-    case manualEntry
-}
-
 struct FlightInfoEntryView: View {
     @State private var flightNumber: String = ""
-    @State private var flightDate: String = ""
+    @State private var flightDate: Date = Date()
     @State private var numberOfPassengers = 1
     @State private var luggageQuantity = 1
-    @State private var flightInfo: FlightInfo?
-    @State private var showError = false
+    @State private var luggageType = "Carry On"
     @State private var isFetching = false
-    @State private var navigationPath = NavigationPath()
-    
-    var body: some View {
-        NavigationStack(path: $navigationPath) {
-            VStack {
-                // Main Form
-                Form {
-                    Section {
-                        TextField("Flight Number", text: $flightNumber)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .keyboardType(.numbersAndPunctuation)
-                            .padding(.vertical, 8) // Additional padding to match UI
-                        
-                        TextField("Flight Date", text: $flightDate)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .keyboardType(.numbersAndPunctuation)
-                            .padding(.vertical, 8) // Additional padding to match UI
+    @State private var fetchedFlightInfo: FlightInfo?
+    @State private var fetchedTime: Date = Date()
+    @State private var shouldNavigateToManualEntry = false
+    @State private var shouldNavigateToScheduledRide = false
 
-                        Picker("Number of Passengers", selection: $numberOfPassengers) {
-                            ForEach(1..<10, id: \.self) { i in
-                                Text("\(i)")
-                            }
+    let luggageOptions = ["Carry On", "Medium", "Large"]
+    let maxPassengers = 6
+
+    var body: some View {
+        NavigationView {
+            VStack(alignment: .leading, spacing: 16) {
+                // Back Button
+                HStack {
+                    NavigationLink(destination: HomeView()) {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("Home")
                         }
-                        .padding(.vertical, 8)
-                        
-                        Picker("Luggage Quantity", selection: $luggageQuantity) {
-                            ForEach(1..<10, id: \.self) { i in
-                                Text("\(i)")
-                            }
-                        }
-                        .padding(.vertical, 8)
-                    } header: {
-                        // Section header styled to match UI
-                        Text("FLIGHT INFO")
-                            .font(.headline)
-                            .foregroundColor(Color(red: 0/255, green: 56/255, blue: 101/255)) // Custom color #003865
-                            .padding(.bottom, 4)
+                        .font(Font.custom("Roboto Flex", size: 16))
+                        .foregroundColor(Color(red: 0.0, green: 0.22, blue: 0.39)) // Navy blue
                     }
+                    Spacer()
                 }
-                .background(Color(UIColor.systemBackground)) // Optional to match background color
-                .scrollContentBackground(.hidden) // Hide default background for forms in SwiftUI
-                
+                .padding(.top)
+
+                // Title Text
+                Text("Flight Info")
+                    .font(Font.custom("Roboto Flex", size: 24))
+                    .fontWeight(.bold)
+                    .foregroundColor(Color(red: 0.0, green: 0.22, blue: 0.39)) // Navy blue
+                    .padding(.bottom, 24)
+
+                // Flight Number Section
+                HStack {
+                    Text("Flight Number")
+                        .font(Font.custom("Roboto Flex", size: 16))
+                        .foregroundColor(.black)
+                    Spacer()
+                    TextField("", text: $flightNumber)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal)
+                        .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
+                        .cornerRadius(5)
+                        .frame(width: 128, height: 45)
+                        .padding(.trailing, 10)
+                }
+                Divider()
+
+                // Flight Date Section
+                HStack {
+                    Text("Flight Date")
+                        .font(Font.custom("Roboto Flex", size: 16))
+                        .foregroundColor(.black)
+                    Spacer()
+                    DatePicker("", selection: $flightDate, displayedComponents: .date)
+                        .labelsHidden()
+                        .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
+                        .cornerRadius(5)
+                        .padding(.trailing, 10)
+                }
+                Divider()
+
+                // Number of Passengers Section
+                HStack {
+                    Text("Number of Passengers")
+                        .font(Font.custom("Roboto Flex", size: 16))
+                        .foregroundColor(.black)
+                    Spacer()
+                    Picker("Number of Passengers", selection: $numberOfPassengers) {
+                        ForEach(1...maxPassengers, id: \.self) { i in
+                            Text("\(i)")
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .padding(.vertical, 0.7)
+                    .padding(.horizontal, 0.7)
+                    .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
+                    .cornerRadius(5)
+                    .frame(width: 70)
+                }
+                Divider()
+
+                // Luggage Section
+                HStack {
+                    Text("Luggage Quantity")
+                        .font(Font.custom("Roboto Flex", size: 16))
+                        .foregroundColor(.black)
+                    Spacer()
+                    Picker("Quantity", selection: $luggageQuantity) {
+                        ForEach(1...maxPassengers, id: \.self) { i in
+                            Text("\(i)")
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .padding(.vertical, 0.7)
+                    .padding(.horizontal, 0.7)
+                    .background(Color(red: 0.61, green: 0.79, blue: 0.92))
+                    .cornerRadius(5)
+                    .frame(width: 70)
+                }
+                Divider()
+
                 Spacer()
+
+                // NavigationLink to Manual Entry
+                NavigationLink(
+                    destination: ManualFlightEntryView(),
+                    isActive: $shouldNavigateToManualEntry
+                ) {
+                    EmptyView()
+                }
+
+                // NavigationLink to Scheduled Ride
+                NavigationLink(
+                    destination: ScheduledRideView(
+                        flightInfo: fetchedFlightInfo ?? FlightInfo(
+                            flnr: "N/A",
+                            date: "",
+                            scheduledDepartureLocal: "",
+                            departureName: "",
+                            arrivalTerminal: ""
+                        ),
+                        flightDate: flightDate,
+                        numberOfPassengers: numberOfPassengers,
+                        luggageQuantity: luggageQuantity,
+                        flightTime: fetchedTime
+                    ),
+                    isActive: $shouldNavigateToScheduledRide
+                ) {
+                    EmptyView()
+                }
 
                 // Save Button
                 Button(action: fetchFlightInfo) {
                     Text("Save this Flight")
-                        .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color(red: 0, green: 56/255, blue: 101/255)) // Custom color #003865
+                        .padding()
+                        .background(Color(red: 0.0, green: 0.22, blue: 0.39)) // Navy blue
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .cornerRadius(8)
                 }
                 .padding(.horizontal)
-                .padding(.bottom, 20) // Extra bottom padding to match UI
                 .disabled(isFetching || flightNumber.isEmpty)
-                
-                if showError {
-                    Text("Could not fetch flight info. Please try again.")
-                        .foregroundColor(.red)
-                        .padding(.top)
-                }
+
+                Spacer()
             }
-            .navigationTitle("Flight Info")
-            .navigationBarTitleDisplayMode(.inline) // Inline title with back button
-            .navigationDestination(for: NavigationDestination.self) { destination in
-                switch destination {
-                case .scheduledRide(let flightInfo, let flightDate):
-                    ScheduledRideView(flightInfo: flightInfo, flightDate: flightDate)
-                case .manualEntry:
-                    ManualFlightEntryView()
-                }
-            }
+            .padding(.horizontal)
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
-    
+
     func fetchFlightInfo() {
         isFetching = true
-        showError = false
-        
+
         let urlString = "https://flightera-flight-data.p.rapidapi.com/flight/info?flnr=\(flightNumber)"
-        guard let url = URL(string: urlString) else { return }
-        
+        guard let url = URL(string: urlString) else {
+            isFetching = false
+            shouldNavigateToManualEntry = true
+            return
+        }
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("c1f1bfc7e1msh21da0f3e0296bd5p1c5466jsn34a8550d2a3c", forHTTPHeaderField: "x-rapidapi-key")
+        request.addValue("12f6dc954cmsh240a548da4506dap1aef90jsn1fa359867ca6", forHTTPHeaderField: "x-rapidapi-key")
         request.addValue("flightera-flight-data.p.rapidapi.com", forHTTPHeaderField: "x-rapidapi-host")
-        
+
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 isFetching = false
-                
+
                 if let error = error {
-                    print("Error fetching flight info: \(error)")
-                    showError = true
-                    navigationPath.append(NavigationDestination.manualEntry)
+                    print("Error fetching flight info: \(error.localizedDescription)")
+                    shouldNavigateToManualEntry = true
                     return
                 }
-                
+
                 guard let data = data else {
-                    showError = true
-                    navigationPath.append(NavigationDestination.manualEntry)
+                    shouldNavigateToManualEntry = true
                     return
                 }
-                
-                // Decode JSON response as an array of FlightInfo
+
                 do {
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let flightInfoArray = try decoder.decode([FlightInfo].self, from: data)
-                    
-                    // Check if there's at least one item in the array
+
                     if let firstFlightInfo = flightInfoArray.first {
-                        self.flightInfo = firstFlightInfo
-                        navigationPath.append(NavigationDestination.scheduledRide(flightInfo: firstFlightInfo, flightDate: flightDate))
+                        fetchedFlightInfo = firstFlightInfo
+
+                        // Extract and format time from scheduledDepartureLocal
+                        if let apiTimeString = firstFlightInfo.scheduledDepartureLocal,
+                           let apiTime = ISO8601DateFormatter().date(from: apiTimeString) {
+                            fetchedTime = apiTime
+                        } else {
+                            fetchedTime = Date() // Default to now if time parsing fails
+                        }
+
+                        shouldNavigateToScheduledRide = true
                     } else {
-                        showError = true
-                        navigationPath.append(NavigationDestination.manualEntry)
+                        shouldNavigateToManualEntry = true
                     }
                 } catch {
                     print("Error decoding response: \(error.localizedDescription)")
-                    showError = true
-                    navigationPath.append(NavigationDestination.manualEntry)
+                    shouldNavigateToManualEntry = true
                 }
             }
         }.resume()
