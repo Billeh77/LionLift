@@ -21,6 +21,7 @@
 		3F9253722CF5152300B0DECF /* CreateAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92536B2CF5152300B0DECF /* CreateAccount.swift */; };
 		3F9253732CF5152300B0DECF /* VerifyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92536C2CF5152300B0DECF /* VerifyCode.swift */; };
 		3F9253742CF5152300B0DECF /* CreateNewPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F92536D2CF5152300B0DECF /* CreateNewPassword.swift */; };
+		3F9253762CF5174800B0DECF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9253752CF5174800B0DECF /* NetworkManager.swift */; };
 		687758692CE67AAA003CA3E9 /* Lion_LiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687758682CE67AAA003CA3E9 /* Lion_LiftApp.swift */; };
 		6877586B2CE67AAA003CA3E9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6877586A2CE67AAA003CA3E9 /* ContentView.swift */; };
 		6877586D2CE67AAC003CA3E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6877586C2CE67AAC003CA3E9 /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		3F92536B2CF5152300B0DECF /* CreateAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccount.swift; sourceTree = "<group>"; };
 		3F92536C2CF5152300B0DECF /* VerifyCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyCode.swift; sourceTree = "<group>"; };
 		3F92536D2CF5152300B0DECF /* CreateNewPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNewPassword.swift; sourceTree = "<group>"; };
+		3F9253752CF5174800B0DECF /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkManager.swift; path = "Lion Lift/Core/Authentication/View/NetworkManager.swift"; sourceTree = SOURCE_ROOT; };
 		687758652CE67AAA003CA3E9 /* Lion Lift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lion Lift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		687758682CE67AAA003CA3E9 /* Lion_LiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lion_LiftApp.swift; sourceTree = "<group>"; };
 		6877586A2CE67AAA003CA3E9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 		687758832CE67CB8003CA3E9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3F9253752CF5174800B0DECF /* NetworkManager.swift */,
 				3F92536B2CF5152300B0DECF /* CreateAccount.swift */,
 				3F92536D2CF5152300B0DECF /* CreateNewPassword.swift */,
 				3F9253682CF5152300B0DECF /* CustomComponents.swift */,
@@ -358,6 +361,7 @@
 				3F9253742CF5152300B0DECF /* CreateNewPassword.swift in Sources */,
 				1F80F10A2CE6ABD4005FB48E /* ProfileSettingsView.swift in Sources */,
 				3F92536F2CF5152300B0DECF /* CustomComponents.swift in Sources */,
+				3F9253762CF5174800B0DECF /* NetworkManager.swift in Sources */,
 				3F9253732CF5152300B0DECF /* VerifyCode.swift in Sources */,
 				6877586B2CE67AAA003CA3E9 /* ContentView.swift in Sources */,
 				0ACD11AD2CF3070600B328BB /* FlightInfoEntryView.swift in Sources */,
@@ -505,9 +509,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Lion Lift/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -522,6 +528,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.AdamSherif.Lion-Lift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -533,9 +540,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Lion Lift/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -550,6 +559,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.AdamSherif.Lion-Lift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
