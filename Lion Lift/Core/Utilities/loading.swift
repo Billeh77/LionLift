@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct LoadingView: View {
     var body: some View {
         ZStack {
             // Background Color (Full screen)
@@ -31,9 +31,9 @@ struct HomeView: View {
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
+struct Loading_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        LoadingView()
             .previewDevice("iPhone 15 Pro")
     }
 }

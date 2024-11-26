@@ -2,7 +2,7 @@
 //  CustomComponents.swift
 //  Flights
 //
-//  Created by Jooyeon Lee on 11/14/24.
+//  Created by Chloe Lee on 11/14/24.
 //
 
 // CustomComponents.swift
