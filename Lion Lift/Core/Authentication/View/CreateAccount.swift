@@ -122,3 +122,11 @@ struct CreateAccountView: View {
         }
     }
 }
+
+// 미리보기 추가
+struct CreateAccountView_Previews: PreviewProvider {
+    static var previews: some View {
+        CreateAccountView()
+            .previewDevice("iPhone 15") // 여기서 원하는 디바이스를 선택할 수 있습니다.
+    }
+}

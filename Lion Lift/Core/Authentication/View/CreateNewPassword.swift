@@ -1,7 +1,3 @@
-
-//  Created by Chloe Lee on 11/14/24.
-
-
 import SwiftUI
 
 struct CreateNewPasswordView: View {
@@ -21,8 +17,6 @@ struct CreateNewPasswordView: View {
                     .font(.custom("Poppins", size: 24).weight(.semibold))
                     .foregroundColor(.white)
                     .padding(.top, 50)
-
-                Spacer()
 
                 // Input Fields
                 VStack(alignment: .leading, spacing: 10) {
@@ -47,7 +41,9 @@ struct CreateNewPasswordView: View {
                         .font(.custom("Poppins", size: 14))
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 30)
 
+                // Validation Message
                 if let message = showMessage {
                     Text(message)
                         .font(.custom("Poppins", size: 14))
@@ -55,17 +51,9 @@ struct CreateNewPasswordView: View {
                         .padding(.top, 10)
                 }
 
-                Spacer()
-
                 // Submit Button
                 Button(action: {
-                    if newPassword.isEmpty || confirmPassword.isEmpty {
-                        showMessage = "All fields are required."
-                    } else if newPassword != confirmPassword {
-                        showMessage = "Passwords do not match."
-                    } else {
-                        showMessage = "Password changed successfully!"
-                    }
+                    handlePasswordChange()
                 }) {
                     Text("Submit")
                         .font(.custom("Poppins", size: 16).weight(.bold))
@@ -75,9 +63,21 @@ struct CreateNewPasswordView: View {
                         .cornerRadius(10)
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 20)
 
-                Spacer()
+                Spacer() 
             }
+            .frame(maxWidth: .infinity, alignment: .top)
+        }
+    }
+
+    func handlePasswordChange() {
+        if newPassword.isEmpty || confirmPassword.isEmpty {
+            showMessage = "All fields are required."
+        } else if newPassword != confirmPassword {
+            showMessage = "Passwords do not match."
+        } else {
+            showMessage = "Password changed successfully!"
         }
     }
 }

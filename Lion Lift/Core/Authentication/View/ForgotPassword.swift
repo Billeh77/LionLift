@@ -1,10 +1,3 @@
-//
-//  forgotpassword.swift
-//  Flights
-//
-//  Created by Chloe Lee on 11/14/24.
-//
-
 import SwiftUI
 
 struct ForgotPasswordView: View {
@@ -21,9 +14,7 @@ struct ForgotPasswordView: View {
                 Text("Forgot Password")
                     .font(.custom("Poppins", size: 24).weight(.semibold))
                     .foregroundColor(.white)
-                    .padding(.top, 50)
-
-                Spacer()
+                    .padding(.top, 50) 
 
                 // Input Field for Email
                 VStack(alignment: .leading, spacing: 10) {
@@ -40,8 +31,6 @@ struct ForgotPasswordView: View {
                 }
                 .padding(.horizontal, 20)
 
-                Spacer()
-
                 // Submit Button
                 Button(action: {
                     // Handle forgot password logic here
@@ -55,8 +44,11 @@ struct ForgotPasswordView: View {
                         .cornerRadius(10)
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 20)
+                .padding(.top, 20)
+
+                Spacer()
             }
+            .padding(.top, 20)
         }
     }
 }

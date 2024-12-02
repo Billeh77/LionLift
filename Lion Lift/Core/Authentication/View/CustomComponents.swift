@@ -5,7 +5,6 @@
 //  Created by Chloe Lee on 11/14/24.
 //
 
-// CustomComponents.swift
 import SwiftUI
 
 // Reusable Input Field

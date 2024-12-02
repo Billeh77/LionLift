@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
     @State private var email: String = ""
@@ -9,109 +10,85 @@ struct LoginView: View {
     @State private var navigateToSignup = false
     @State private var navigateToForgotPassword = false
     @State private var navigateToMainTab = false
-    @State private var navigateToHome = false
-
 
     var body: some View {
         NavigationStack {
-            GeometryReader { geometry in
-                ZStack {
-                    Color(red: 0.61, green: 0.80, blue: 0.92)
-                        .edgesIgnoringSafeArea(.all)
-                    
-                    VStack(spacing: 20) {
-                        Text("Login")
-                            .font(.custom("Poppins", size: 24).weight(.bold))
-                            .foregroundColor(.white)
-                            .padding(.top, geometry.size.height * 0.05)
+            ZStack {
+                Color(red: 0.61, green: 0.80, blue: 0.92)
+                    .edgesIgnoringSafeArea(.all)
 
-                        CustomInputField(placeholder: "Columbia email", text: $email)
-                        CustomInputField(placeholder: "Password", isSecure: true, text: $password)
-                        
-                        if let errorMessage = errorMessage {
-                            Text(errorMessage)
-                                .font(.custom("Roboto", size: 13))
-                                .foregroundColor(.red)
-                                .padding(.horizontal, 10)
-                        }
-                        
-                        if isLoading {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        } else {
-                            CustomButton(
-                                title: "Login",
-                                backgroundColor: Color(red: 0, green: 0.22, blue: 0.40),
-                                action: handleLogin
-                            )
-                        }
-                        
-                        Button(action: {
-                            navigateToForgotPassword = true
-                        }) {
-                            Text("Forgot password?")
+                VStack(spacing: 20) {
+                    Text("Login")
+                        .font(.custom("Poppins", size: 24).weight(.bold))
+                        .foregroundColor(.white)
+                        .padding(.top, 50)
+
+                    CustomInputField(placeholder: "Email", text: $email)
+                        .autocapitalization(.none)
+                    CustomInputField(placeholder: "Password", isSecure: true, text: $password)
+
+                    if let errorMessage = errorMessage {
+                        Text(errorMessage)
+                            .font(.custom("Roboto", size: 13))
+                            .foregroundColor(.red)
+                            .padding(.horizontal, 10)
+                    }
+
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    } else {
+                        CustomButton(
+                            title: "Login",
+                            backgroundColor: Color(red: 0, green: 0.22, blue: 0.40),
+                            action: handleLogin
+                        )
+                    }
+
+                    Spacer()
+
+                    HStack(spacing: 5) {
+                        Text("Don’t have an account?")
+                            .font(.custom("Roboto", size: 13).weight(.medium))
+                            .foregroundColor(Color(red: 0.28, green: 0.28, blue: 0.28))
+                        NavigationLink(destination: SignUpView(), isActive: $navigateToSignup) {
+                            Text("Sign Up")
                                 .font(.custom("Roboto", size: 13).weight(.medium))
                                 .foregroundColor(.white)
                                 .underline()
                         }
-                        
-                        Spacer()
-                        
-                        HStack(spacing: 5) {
-                            Text("Don’t have an account?")
-                                .font(.custom("Roboto", size: 13).weight(.medium))
-                                .foregroundColor(Color(red: 0.28, green: 0.28, blue: 0.28))
-                            Button(action: {
-                                navigateToSignup = true
-                            }) {
-                                Text("Sign Up")
-                                    .font(.custom("Roboto", size: 13).weight(.medium))
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .padding(.bottom, geometry.size.height * 0.05)
                     }
-                    .padding(.horizontal, geometry.size.width * 0.1)
                 }
-                .navigationDestination(isPresented: $navigateToSignup) {
-                    SignUpView()
-                }
-                .navigationDestination(isPresented: $navigateToForgotPassword) {
-                    ForgotPasswordView()
-                }
-                .navigationDestination(isPresented: $navigateToMainTab) {
-                    MainTabView()
-                }
-                .navigationDestination(isPresented: $navigateToHome) {
-                    HomeView() 
-                }
+                .padding(.horizontal, 20)
             }
         }
     }
-    
+
     func handleLogin() {
-            errorMessage = nil
-
-            guard !email.isEmpty, email.contains("@columbia.edu") else {
-                errorMessage = "Please enter a valid email."
-                return
-            }
-
-            guard !password.isEmpty else {
-                errorMessage = "Password cannot be empty."
-                return
-            }
-
+        errorMessage = nil
         isLoading = true
-        NetworkManager.shared.login(email: email, password: password) { result in
+
+        guard !email.isEmpty else {
+            errorMessage = "Email cannot be empty."
+            isLoading = false
+            return
+        }
+
+        guard !password.isEmpty else {
+            errorMessage = "Password cannot be empty."
+            isLoading = false
+            return
+        }
+
+        // Firebase
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             DispatchQueue.main.async {
                 isLoading = false
-                switch result {
-                case .success:
-                    navigateToMainTab = true
-                case .failure(let error):
+                if let error = error {
                     errorMessage = error.localizedDescription
+                    return
                 }
+                navigateToMainTab = true
             }
         }
     }

@@ -1,10 +1,3 @@
-//
-//  verifycode.swift
-//  Flights
-//
-//  Created by Chloe Lee on 11/14/24.
-//
-
 import SwiftUI
 
 struct VerifyCodeView: View {
@@ -25,14 +18,13 @@ struct VerifyCodeView: View {
                     .foregroundColor(.white)
                     .padding(.top, 50)
 
-                Spacer()
-
                 // Code Verification Section
                 Text("Enter the 6-digit code we sent to your email")
                     .font(.custom("Poppins", size: 16))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
+                    .padding(.top, 20)
 
                 HStack(spacing: 10) {
                     ForEach(0..<6) { index in
@@ -62,6 +54,7 @@ struct VerifyCodeView: View {
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 20)
 
                 if let message = showMessage {
                     Text(message)
@@ -72,11 +65,7 @@ struct VerifyCodeView: View {
 
                 // Verify Button
                 Button(action: {
-                    if enteredCode == verificationCode {
-                        showMessage = "Code verified successfully!"
-                    } else {
-                        showMessage = "Invalid code. Please try again."
-                    }
+                    handleVerifyCode()
                 }) {
                     Text("Verify")
                         .font(.custom("Poppins", size: 16).weight(.bold))
@@ -86,9 +75,20 @@ struct VerifyCodeView: View {
                         .cornerRadius(10)
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 20)
 
                 Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .top)
+            .padding(.top, 20)
+        }
+    }
+
+    func handleVerifyCode() {
+        if enteredCode == verificationCode {
+            showMessage = "Code verified successfully!"
+        } else {
+            showMessage = "Invalid code. Please try again."
         }
     }
 }
