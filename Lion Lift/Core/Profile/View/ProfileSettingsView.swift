@@ -1,15 +1,30 @@
-//
-//  ProfileSettingsView.swift
-//  Lion Lift
-//
-//  Created by Chase Preston on 11/14/24.
-//
-
-import SwiftUI
-
 struct ProfileSettingsView: View {
+    @State private var username: String = "Liam Parker"
+    @State private var email: String = "liamparker@tmail.com"
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
-        Text("Profile Settings")
+        Form {
+            Section(header: Text("Personal Information")) {
+                TextField("Username", text: $username)
+                TextField("Email", text: $email)
+                    .keyboardType(.emailAddress)
+            }
+        }
+        .navigationTitle("Profile Settings")
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    // save logic goes here
+                    dismiss()
+                }
+            }
+        }
     }
 }
 
