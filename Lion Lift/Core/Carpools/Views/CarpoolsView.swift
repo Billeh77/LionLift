@@ -10,6 +10,9 @@ import SwiftUI
 struct CarpoolsView: View {
     @State private var selectedFilter: CarpoolManagerViewModel = .carpools
     @Namespace var animation
+    
+    @ObservedObject var viewModel = CarpoolsViewModel()
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -79,8 +82,12 @@ extension CarpoolsView {
     
     var matches: some View {
         VStack {
-            ForEach(0..<3, id: \.self) { _ in
-                MatchRowView(user: User.dummyUser, match: Match.dummyMatch)
+            ForEach(viewModel.matches) { match in
+                if let currentuid = AuthViewModel.shared.userSession?.uid {
+                    if currentuid != match.uid {
+                        MatchRowView(match: match)
+                    }
+                }
             }
             Spacer()
         }

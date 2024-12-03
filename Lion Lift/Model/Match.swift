@@ -17,6 +17,9 @@ struct Match: Identifiable, Decodable {
     let departing: Bool
     let timestamp: Timestamp
     let lastMessage: String
+    let uid: String
+    let userFullName: String
+    let userProfileImageUrl: String?
     
     
     static var dummyMatch: Match {
@@ -26,7 +29,10 @@ struct Match: Identifiable, Decodable {
             dateAndTime: Timestamp(date: Date()),
             departing: false,
             timestamp: Timestamp(date: Date()),
-            lastMessage: ""
+            lastMessage: "",
+            uid: "",
+            userFullName: "",
+            userProfileImageUrl: nil
             )
     }
 }

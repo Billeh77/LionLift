@@ -75,6 +75,7 @@ class FlightConfirmationViewModel: ObservableObject {
 
         // Step 5: Update user flight info in Firestore
         guard let currentUserId = AuthViewModel.shared.userSession?.uid else { return }
+        guard let currentUser = AuthViewModel.shared.currentUser else { return }
 
         COLLECTION_USERS.document(currentUserId).updateData(data) { error in
             if let error = error {
@@ -82,14 +83,20 @@ class FlightConfirmationViewModel: ObservableObject {
             }
         }
         
-        let matchData: [String: Any] = [
+        var matchData: [String: Any] = [
             "uids": [currentUserId],
             "airport": nextFlightAirport,
             "dateAndTime": timestamp,
             "departing": departing ?? false,
             "lastMessage": "New match! Plan your carpool here",
-            "timestamp": Timestamp(date: Date())
+            "timestamp": Timestamp(date: Date()),
+            "uid": currentUserId,
+            "userFullName": currentUser.fullname
         ]
+        
+        if let profileImageUrl = currentUser.profileImageUrl {
+            matchData["userProfileImageUrl"] = profileImageUrl
+        }
         
         COLLECTION_MATCHES.addDocument(data: matchData) { error in
             if let error = error {

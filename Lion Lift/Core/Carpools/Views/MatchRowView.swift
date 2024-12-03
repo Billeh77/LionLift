@@ -10,12 +10,11 @@ import Kingfisher
 import Firebase
 
 struct MatchRowView: View {
-    let user: User
     let match: Match
     @State private var showRequestSheet = false
     var body: some View {
         HStack {
-            if let profileImageUrl = user.profileImageUrl {
+            if let profileImageUrl = match.userProfileImageUrl {
                 KFImage(URL(string: profileImageUrl))
                     .resizable()
                     .scaledToFill()
@@ -34,7 +33,7 @@ struct MatchRowView: View {
             }
                 
             VStack (alignment: .leading, spacing: 4) {
-                Text(user.fullname)
+                Text(match.userFullName)
                     .font(.footnote).bold()
                     .foregroundColor(.black)
                 Text(match.airport)
@@ -78,5 +77,5 @@ struct MatchRowView: View {
 }
 
 #Preview {
-    MatchRowView(user: User.dummyUser, match: Match.dummyMatch)
+    MatchRowView(match: Match.dummyMatch)
 }
