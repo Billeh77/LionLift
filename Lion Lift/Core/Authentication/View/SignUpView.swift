@@ -37,7 +37,7 @@ struct SignUpView: View {
                                 .frame(width: 180, height: 180)
                                 .clipShape(Circle())
                         } else {
-                            Image("plus_photo")
+                            Image(systemName: "person.fill.badge.plus")
                                 .resizable()
                                 .renderingMode(.template)
                                 .scaledToFill()
