@@ -1,41 +1,29 @@
 import SwiftUI
 
 struct ManualFlightEntryView: View {
-    @State private var selectedAirport: String = "JFK" // Default airport
-    @State private var selectedTerminal: String = "Terminal 1" // Default terminal
-    @State private var flightDate: Date = Date()
-    @State private var flightTime: Date = Date()
-    @State private var numberOfPassengers = 1
-    @State private var luggageQuantity = 1
+    @State private var selectedAirport: String = "John F. Kennedy International Airport" // Default airport
+    @State private var enteredOtherAirport: String = "" // For manual input
+    @State private var flightDateTime: Date = Date()
     @State private var shouldNavigateToScheduledRide = false
-    @State private var departing = false
+    @State private var isDeparting = false
 
-    let airports = ["JFK", "LGA", "EWR"]
-    let terminalsByAirport: [String: [String]] = [
-        "JFK": ["Terminal 1", "Terminal 2", "Terminal 4", "Terminal 5", "Terminal 7", "Terminal 8"],
-        "LGA": ["Terminal A", "Terminal B", "Terminal C", "Terminal D"],
-        "EWR": ["Terminal A", "Terminal B", "Terminal C"]
+    let nycAirports = [
+        "John F. Kennedy International Airport",
+        "LaGuardia Airport",
+        "Newark Liberty International Airport"
     ]
-    let maxPassengers = 6
 
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 20) {
-                // Back to Home
+         
                 HStack {
-                    NavigationLink(destination: HomeView()) {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("Home")
-                        }
-                        .font(Font.custom("Roboto Flex", size: 16))
-                        .foregroundColor(Color(red: 0.0, green: 0.22, blue: 0.39)) // Navy blue
-                    }
+                    
                     Spacer()
                 }
                 .padding(.top)
 
-                // Title
+       
                 Text("Sorry, we couldn’t match your flight")
                     .font(Font.custom("Roboto Flex", size: 20))
                     .fontWeight(.bold)
@@ -43,7 +31,7 @@ struct ManualFlightEntryView: View {
                     .multilineTextAlignment(.leading)
                     .padding(.top)
 
-                // Subtitle
+       
                 Text("Enter Flight Details Manually")
                     .font(Font.custom("Roboto Flex", size: 18))
                     .fontWeight(.semibold)
@@ -51,24 +39,25 @@ struct ManualFlightEntryView: View {
                     .padding(.bottom, 10)
 
                 VStack(alignment: .leading, spacing: 16) {
+                   
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Departing or arriving to NYC?")
                             .font(Font.custom("Roboto Flex", size: 16))
                             .foregroundColor(.black)
                         Menu {
                             Button(action: {
-                                departing = true
+                                isDeparting = true
                             }) {
                                 Text("Departing NYC")
                             }
                             Button(action: {
-                                departing = false
+                                isDeparting = false
                             }) {
                                 Text("Arriving to NYC")
                             }
                         } label: {
                             HStack {
-                                Text(departing ? "Departing NYC" : "Arriving to NYC")
+                                Text(isDeparting ? "Departing NYC" : "Arriving to NYC")
                                     .foregroundColor(.black)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 Image(systemName: "chevron.down")
@@ -76,158 +65,140 @@ struct ManualFlightEntryView: View {
                             }
                             .padding(.vertical, 8)
                             .padding(.horizontal)
-                            .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Box color
+                            .background(Color(red: 0.61, green: 0.79, blue: 0.92))
                             .cornerRadius(5)
                         }
-                        Divider() // Thin line
+                        Divider()
                     }
-                    // Airport Dropdown
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(departing ? "Departure Airport" : "Arrival Airport")
-                            .font(Font.custom("Roboto Flex", size: 16))
-                            .foregroundColor(.black)
-                        Menu {
-                            ForEach(airports, id: \.self) { airport in
-                                Button(action: {
-                                    selectedAirport = airport
-                                    selectedTerminal = terminalsByAirport[airport]?.first ?? ""
-                                }) {
-                                    Text(airport)
+
+                   
+                    if isDeparting {
+                      
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Departure Airport")
+                                .font(Font.custom("Roboto Flex", size: 16))
+                                .foregroundColor(.black)
+                            Menu {
+                                ForEach(nycAirports, id: \.self) { airport in
+                                    Button(action: {
+                                        selectedAirport = airport
+                                    }) {
+                                        Text(airport)
+                                    }
                                 }
-                            }
-                        } label: {
-                            HStack {
-                                Text(selectedAirport)
-                                    .foregroundColor(.black)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                Image(systemName: "chevron.down")
-                                    .foregroundColor(.secondary)
-                            }
-                            .padding(.vertical, 8)
-                            .padding(.horizontal)
-                            .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Box color
-                            .cornerRadius(5)
-                        }
-                        Divider() // Thin line
-                    }
-
-                    // Terminal Dropdown
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Terminal")
-                            .font(Font.custom("Roboto Flex", size: 16))
-                            .foregroundColor(.black)
-                        Menu {
-                            ForEach(terminalsByAirport[selectedAirport] ?? [], id: \.self) { terminal in
-                                Button(action: {
-                                    selectedTerminal = terminal
-                                }) {
-                                    Text(terminal)
+                            } label: {
+                                HStack {
+                                    Text(selectedAirport)
+                                        .foregroundColor(.black)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    Image(systemName: "chevron.down")
+                                        .foregroundColor(.secondary)
                                 }
+                                .padding(.vertical, 8)
+                                .padding(.horizontal)
+                                .background(Color(red: 0.61, green: 0.79, blue: 0.92))
+                                .cornerRadius(5)
                             }
-                        } label: {
-                            HStack {
-                                Text(selectedTerminal)
-                                    .foregroundColor(.black)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                Image(systemName: "chevron.down")
-                                    .foregroundColor(.secondary)
-                            }
-                            .padding(.vertical, 8)
-                            .padding(.horizontal)
-                            .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Box color
-                            .cornerRadius(5)
+                            Divider()
                         }
-                        Divider() // Thin line
+
+                    
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Arrival Airport")
+                                .font(Font.custom("Roboto Flex", size: 16))
+                                .foregroundColor(.black)
+                            TextField("Enter arrival airport", text: $enteredOtherAirport)
+                                .padding(.vertical, 8)
+                                .padding(.horizontal)
+                                .background(Color(red: 0.61, green: 0.79, blue: 0.92))
+                                .cornerRadius(5)
+                            Divider()
+                        }
+                    } else {
+                       
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Departure Airport")
+                                .font(Font.custom("Roboto Flex", size: 16))
+                                .foregroundColor(.black)
+                            TextField("Enter departure airport", text: $enteredOtherAirport)
+                                .padding(.vertical, 8)
+                                .padding(.horizontal)
+                                .background(Color(red: 0.61, green: 0.79, blue: 0.92))
+                                .cornerRadius(5)
+                            Divider()
+                        }
+
+                  
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Arrival Airport")
+                                .font(Font.custom("Roboto Flex", size: 16))
+                                .foregroundColor(.black)
+                            Menu {
+                                ForEach(nycAirports, id: \.self) { airport in
+                                    Button(action: {
+                                        selectedAirport = airport
+                                    }) {
+                                        Text(airport)
+                                    }
+                                }
+                            } label: {
+                                HStack {
+                                    Text(selectedAirport)
+                                        .foregroundColor(.black)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    Image(systemName: "chevron.down")
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.vertical, 8)
+                                .padding(.horizontal)
+                                .background(Color(red: 0.61, green: 0.79, blue: 0.92))
+                                .cornerRadius(5)
+                            }
+                            Divider()
+                        }
                     }
 
-                    // Flight Date Picker
+                  
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Flight Date")
+                        Text("Date and Time At Airport:")
                             .font(Font.custom("Roboto Flex", size: 16))
                             .foregroundColor(.black)
-                        DatePicker("", selection: $flightDate, displayedComponents: .date)
+                        DatePicker("", selection: $flightDateTime, displayedComponents: [.hourAndMinute, .date])
                             .labelsHidden()
-                            .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Box color
+                            .background(Color(red: 0.61, green: 0.79, blue: 0.92))
                             .cornerRadius(5)
-                        Divider() // Thin line
-                    }
-
-                    // Flight Time Picker
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Time at Airport")
-                            .font(Font.custom("Roboto Flex", size: 16))
-                            .foregroundColor(.black)
-                        DatePicker("", selection: $flightTime, displayedComponents: .hourAndMinute)
-                            .labelsHidden()
-                            .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Box color
-                            .cornerRadius(5)
-                        Divider() // Thin line
-                    }
-
-                    // Number of Passengers
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Number of Passengers")
-                            .font(Font.custom("Roboto Flex", size: 16))
-                            .foregroundColor(.black)
-                        Picker("Number of Passengers", selection: $numberOfPassengers) {
-                            ForEach(1...maxPassengers, id: \.self) { i in
-                                Text("\(i)")
-                            }
-                        }
-                        .pickerStyle(MenuPickerStyle())
-                        .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Box color
-                        .cornerRadius(5)
-                        Divider() // Thin line
-                    }
-
-                    // Luggage Quantity
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Luggage Quantity")
-                            .font(Font.custom("Roboto Flex", size: 16))
-                            .foregroundColor(.black)
-                        Picker("Luggage Quantity", selection: $luggageQuantity) {
-                            ForEach(1...maxPassengers, id: \.self) { i in
-                                Text("\(i)")
-                            }
-                        }
-                        .pickerStyle(MenuPickerStyle())
-                        .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Box color
-                        .cornerRadius(5)
-                        Divider() // Thin line
+                        Divider()
                     }
                 }
 
                 Spacer()
 
-                // NavigationLink to ScheduledRideView
                 NavigationLink(
                     destination: ScheduledRideView(
                         flightInfo: FlightInfo(
                             flnr: "N/A",
                             date: selectedAirport,
-                            scheduledDepartureLocal: selectedTerminal,
-                            departureName: "", // Optional field if not relevant
-                            arrivalTerminal: ""
+                            scheduledDepartureLocal: isDeparting ? selectedAirport : enteredOtherAirport,
+                            scheduledArrivalLocal: isDeparting ? enteredOtherAirport : selectedAirport,
+                            departureName: isDeparting ? selectedAirport : enteredOtherAirport,
+                            arrivalName: isDeparting ? enteredOtherAirport : selectedAirport
                         ),
-                        flightDate: flightDate,
-                        numberOfPassengers: numberOfPassengers,
-                        luggageQuantity: luggageQuantity,
-                        flightTime: flightTime // Pass the selected time
+                        flightDate: flightDateTime,
+                        flightTime: flightDateTime
                     ),
                     isActive: $shouldNavigateToScheduledRide
                 ) {
                     EmptyView()
                 }
 
-
-                // Next Button
+           
                 Button(action: {
                     shouldNavigateToScheduledRide = true
                 }) {
                     Text("Next")
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color(red: 0.0, green: 0.22, blue: 0.39)) // Navy blue
+                        .background(Color(red: 0.0, green: 0.22, blue: 0.39))
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
@@ -238,8 +209,6 @@ struct ManualFlightEntryView: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-           
         }
     }
-       
 }

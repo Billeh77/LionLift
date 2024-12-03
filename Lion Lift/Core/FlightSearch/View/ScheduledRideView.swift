@@ -3,19 +3,16 @@ import SwiftUI
 struct ScheduledRideView: View {
     let flightInfo: FlightInfo
     let flightDate: Date?
-    let numberOfPassengers: Int
-    let luggageQuantity: Int
     let flightTime: Date
 
     @State private var flightNumber: String = ""
-    @State private var airport: String = ""
-    @State private var terminal: String = ""
+    @State private var departureAirport: String = ""
+    @State private var arrivalAirport: String = ""
     @State private var date: String = ""
     @State private var time: Date = Date()
-    @State private var passengers: Int = 1
-    @State private var luggage: Int = 1
-    @Environment(\.presentationMode) var presentationMode
+    @State private var navigateToConfirmation = false
 
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -29,91 +26,70 @@ struct ScheduledRideView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Flight Number:")
                     .font(Font.custom("Roboto Flex", size: 16))
-                TextField("Flight Number", text: $flightNumber)
+                Text(flightNumber)
+                    .font(Font.custom("Roboto Flex", size: 16))
                     .padding(.vertical, 8)
                     .padding(.horizontal)
                     .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
                     .cornerRadius(5)
             }
 
-            // Airport
+            // Departure Airport
             VStack(alignment: .leading, spacing: 4) {
-                Text("Airport:")
+                Text("Departure Airport:")
                     .font(Font.custom("Roboto Flex", size: 16))
-                TextField("Airport", text: $airport)
+                Text(departureAirport)
+                    .font(Font.custom("Roboto Flex", size: 16))
                     .padding(.vertical, 8)
                     .padding(.horizontal)
                     .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
                     .cornerRadius(5)
             }
 
-            // Terminal
+            // Arrival Airport
             VStack(alignment: .leading, spacing: 4) {
-                Text("Terminal:")
+                Text("Arrival Airport:")
                     .font(Font.custom("Roboto Flex", size: 16))
-                TextField("Terminal", text: $terminal)
+                Text(arrivalAirport)
+                    .font(Font.custom("Roboto Flex", size: 16))
                     .padding(.vertical, 8)
                     .padding(.horizontal)
                     .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
                     .cornerRadius(5)
             }
 
-            // Date
-//            VStack(alignment: .leading, spacing: 4) {
-//                Text("Date:")
-//                    .font(Font.custom("Roboto Flex", size: 16))
-//                TextField("Date", text: $date)
-//                    .padding(.vertical, 8)
-//                    .padding(.horizontal)
-//                    .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
-//                    .cornerRadius(5)
-//            }
-
-            // Time
+            // Date and Time
             VStack(alignment: .leading, spacing: 4) {
-                Text("Date and time:")
+                Text("Date and Time at Airport:")
                     .font(Font.custom("Roboto Flex", size: 16))
-                DatePicker("", selection: $time, displayedComponents: [.hourAndMinute, .date])
-                    .labelsHidden()
-                   
-                    .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
-                    .cornerRadius(5)
-            }
+                HStack {
+                    Text(date) // Display user-entered date
+                        .font(Font.custom("Roboto Flex", size: 16))
+                        .padding(.vertical, 8)
+                        .padding(.horizontal)
+                        .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
+                        .cornerRadius(5)
 
-            // Number of Passengers
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Number of Passengers:")
-                    .font(Font.custom("Roboto Flex", size: 16))
-                TextField("Passengers", value: $passengers, formatter: NumberFormatter())
-                    .keyboardType(.numberPad)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
-                    .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
-                    .cornerRadius(5)
-            }
-
-            // Luggage
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Luggage Quantity:")
-                    .font(Font.custom("Roboto Flex", size: 16))
-                TextField("Luggage", value: $luggage, formatter: NumberFormatter())
-                    .keyboardType(.numberPad)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
-                    .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
-                    .cornerRadius(5)
+                    DatePicker("", selection: $time, displayedComponents: [.hourAndMinute])
+                        .labelsHidden()
+                        .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
+                        .cornerRadius(5)
+                }
             }
 
             Spacer()
 
-            // Save Changes Button
-//            NavigationLink(destination: HomeView()) {
-//                
-//            }
-//            .padding(.horizontal)
-            
+          
+            NavigationLink(
+                destination: ConfirmationView(),
+                isActive: $navigateToConfirmation
+            ) {
+                EmptyView()
+            }
+
+       
             Button {
-                presentationMode.wrappedValue.dismiss()
+                navigateToConfirmation = true
             } label: {
                 Text("Save Changes")
                     .frame(maxWidth: .infinity)
@@ -126,23 +102,74 @@ struct ScheduledRideView: View {
         }
         .padding()
         
-        .navigationBarBackButtonHidden()
+       
         .onAppear {
-            // Set default values from flightInfo when view appears
-            flightNumber = flightInfo.flnr.isEmpty ? "N/A" : flightInfo.flnr
-            airport = flightInfo.departureName ?? ""
-            terminal = flightInfo.arrivalTerminal ?? ""
-            date = formatDate(flightDate)
-            time = flightTime // Already a Date
-            passengers = numberOfPassengers
-            luggage = luggageQuantity
+            print("ScheduledRideView: onAppear called")
+            updateViewData()
         }
     }
 
-    func formatDate(_ date: Date?) -> String {
+    private func updateViewData() {
+        print("Updating view data with flightInfo: \(flightInfo)")
+
+        // Populate initial state values from `flightInfo`
+        flightNumber = flightInfo.flnr.isEmpty ? "N/A" : flightInfo.flnr
+        departureAirport = flightInfo.departureName ?? "Unknown"
+        arrivalAirport = flightInfo.arrivalName ?? "Unknown"
+
+        if let userFlightDate = flightDate {
+            date = formatDate(userFlightDate)
+        } else {
+            date = "Unknown Date"
+        }
+
+        // Define NYC airports
+        let nyAirports = ["John F. Kennedy International Airport", "JFK", "LaGuardia Airport", "LGA", "Newark Liberty International Airport", "EWR"]
+
+        // Handle time based on NYC context
+        if flightInfo.flnr != "N/A" {
+            if let departureAirportName = flightInfo.departureName,
+               nyAirports.contains(departureAirportName),
+               let departureTimeString = flightInfo.scheduledDepartureLocal,
+               let parsedDepartureTime = ISO8601DateFormatter().date(from: departureTimeString) {
+                // Show departure time if departing from NYC
+                time = parsedDepartureTime
+                print("NYC departure detected. Using departure time: \(time)")
+            } else if let arrivalAirportName = flightInfo.arrivalName,
+                      nyAirports.contains(arrivalAirportName),
+                      let arrivalTimeString = flightInfo.scheduledArrivalLocal,
+                      let parsedArrivalTime = ISO8601DateFormatter().date(from: arrivalTimeString) {
+                // Show arrival time if arriving in NYC
+                time = parsedArrivalTime
+                print("NYC arrival detected. Using arrival time: \(time)")
+            } else {
+                // Fallback to flightTime if neither departure nor arrival is in NYC
+                time = flightTime
+                print("No NYC airport detected. Using fallback time: \(time)")
+            }
+        } else {
+            // Manual Entry: Use the user-entered time
+            time = flightTime
+            print("Manual entry detected. Using user-entered time: \(time)")
+        }
+
+        print("Initial Values - Flight Number: \(flightNumber), Departure Airport: \(departureAirport), Arrival Airport: \(arrivalAirport), Date: \(date), Time: \(time)")
+    }
+
+
+    private func formatDate(_ date: Date?) -> String {
         guard let date = date else { return "" }
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.string(from: date)
+    }
+
+    private func combineDateAndTime(date: Date?, time: Date) -> Date {
+        guard let userDate = date else { return time }
+        let calendar = Calendar.current
+        let timeComponents = calendar.dateComponents([.hour, .minute, .second], from: time)
+        var combinedDate = calendar.date(from: calendar.dateComponents([.year, .month, .day], from: userDate)) ?? time
+        combinedDate = calendar.date(byAdding: timeComponents, to: combinedDate) ?? time
+        return combinedDate
     }
 }

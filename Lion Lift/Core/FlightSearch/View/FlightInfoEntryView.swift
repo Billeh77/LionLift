@@ -3,32 +3,18 @@ import SwiftUI
 struct FlightInfoEntryView: View {
     @State private var flightNumber: String = ""
     @State private var flightDate: Date = Date()
-    @State private var numberOfPassengers = 1
-    @State private var luggageQuantity = 1
-    @State private var luggageType = "Carry On"
     @State private var isFetching = false
     @State private var fetchedFlightInfo: FlightInfo?
     @State private var fetchedTime: Date = Date()
     @State private var shouldNavigateToManualEntry = false
     @State private var shouldNavigateToScheduledRide = false
 
-    let luggageOptions = ["Carry On", "Medium", "Large"]
-    let maxPassengers = 6
-
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 16) {
                 // Back Button
                 HStack {
-                    NavigationLink(destination: HomeView()) {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("Home")
-                        }
-                        .font(Font.custom("Roboto Flex", size: 16))
-                        .foregroundColor(Color(red: 0.0, green: 0.22, blue: 0.39)) // Navy blue
-                    }
-                    Spacer()
+                    
                 }
                 .padding(.top)
 
@@ -39,7 +25,7 @@ struct FlightInfoEntryView: View {
                     .foregroundColor(Color(red: 0.0, green: 0.22, blue: 0.39)) // Navy blue
                     .padding(.bottom, 24)
 
-                // Flight Number Section
+             
                 HStack {
                     Text("Flight Number")
                         .font(Font.custom("Roboto Flex", size: 16))
@@ -55,7 +41,7 @@ struct FlightInfoEntryView: View {
                 }
                 Divider()
 
-                // Flight Date Section
+        
                 HStack {
                     Text("Flight Date")
                         .font(Font.custom("Roboto Flex", size: 16))
@@ -69,49 +55,8 @@ struct FlightInfoEntryView: View {
                 }
                 Divider()
 
-                // Number of Passengers Section
-                HStack {
-                    Text("Number of Passengers")
-                        .font(Font.custom("Roboto Flex", size: 16))
-                        .foregroundColor(.black)
-                    Spacer()
-                    Picker("Number of Passengers", selection: $numberOfPassengers) {
-                        ForEach(1...maxPassengers, id: \.self) { i in
-                            Text("\(i)")
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .padding(.vertical, 0.7)
-                    .padding(.horizontal, 0.7)
-                    .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
-                    .cornerRadius(5)
-                    .frame(width: 70)
-                }
-                Divider()
-
-                // Luggage Section
-                HStack {
-                    Text("Luggage Quantity")
-                        .font(Font.custom("Roboto Flex", size: 16))
-                        .foregroundColor(.black)
-                    Spacer()
-                    Picker("Quantity", selection: $luggageQuantity) {
-                        ForEach(1...maxPassengers, id: \.self) { i in
-                            Text("\(i)")
-                        }
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .padding(.vertical, 0.7)
-                    .padding(.horizontal, 0.7)
-                    .background(Color(red: 0.61, green: 0.79, blue: 0.92))
-                    .cornerRadius(5)
-                    .frame(width: 70)
-                }
-                Divider()
-
                 Spacer()
 
-                // NavigationLink to Manual Entry
                 NavigationLink(
                     destination: ManualFlightEntryView(),
                     isActive: $shouldNavigateToManualEntry
@@ -119,19 +64,17 @@ struct FlightInfoEntryView: View {
                     EmptyView()
                 }
 
-                // NavigationLink to Scheduled Ride
                 NavigationLink(
                     destination: ScheduledRideView(
                         flightInfo: fetchedFlightInfo ?? FlightInfo(
                             flnr: "N/A",
                             date: "",
                             scheduledDepartureLocal: "",
+                            scheduledArrivalLocal: "",
                             departureName: "",
-                            arrivalTerminal: ""
+                            arrivalName: ""
                         ),
                         flightDate: flightDate,
-                        numberOfPassengers: numberOfPassengers,
-                        luggageQuantity: luggageQuantity,
                         flightTime: fetchedTime
                     ),
                     isActive: $shouldNavigateToScheduledRide
@@ -171,49 +114,48 @@ struct FlightInfoEntryView: View {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("12f6dc954cmsh240a548da4506dap1aef90jsn1fa359867ca6", forHTTPHeaderField: "x-rapidapi-key")
+        request.addValue("e8598f49d5msh6a93870f137bae6p1e12ebjsn81e119e0fe4d", forHTTPHeaderField: "x-rapidapi-key")
         request.addValue("flightera-flight-data.p.rapidapi.com", forHTTPHeaderField: "x-rapidapi-host")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
-                isFetching = false
+                self.isFetching = false
 
                 if let error = error {
                     print("Error fetching flight info: \(error.localizedDescription)")
-                    shouldNavigateToManualEntry = true
+                    self.shouldNavigateToManualEntry = true
                     return
                 }
 
                 guard let data = data else {
-                    shouldNavigateToManualEntry = true
+                    print("No data received from API")
+                    self.shouldNavigateToManualEntry = true
                     return
                 }
 
                 do {
+                    // Log raw JSON response for debugging
+                    if let jsonString = String(data: data, encoding: .utf8) {
+                        print("Raw API Response: \(jsonString)")
+                    }
+
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let flightInfoArray = try decoder.decode([FlightInfo].self, from: data)
 
                     if let firstFlightInfo = flightInfoArray.first {
-                        fetchedFlightInfo = firstFlightInfo
-
-                        // Extract and format time from scheduledDepartureLocal
-                        if let apiTimeString = firstFlightInfo.scheduledDepartureLocal,
-                           let apiTime = ISO8601DateFormatter().date(from: apiTimeString) {
-                            fetchedTime = apiTime
-                        } else {
-                            fetchedTime = Date() // Default to now if time parsing fails
-                        }
-
-                        shouldNavigateToScheduledRide = true
+                        self.fetchedFlightInfo = firstFlightInfo
+                        self.shouldNavigateToScheduledRide = true
                     } else {
-                        shouldNavigateToManualEntry = true
+                        print("No flight info found in response")
+                        self.shouldNavigateToManualEntry = true
                     }
                 } catch {
                     print("Error decoding response: \(error.localizedDescription)")
-                    shouldNavigateToManualEntry = true
+                    self.shouldNavigateToManualEntry = true
                 }
             }
         }.resume()
     }
+
 }

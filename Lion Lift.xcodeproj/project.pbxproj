@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1A312A2CFF0FF2002677EF /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1A31292CFF0FF2002677EF /* ConfirmationView.swift */; };
 		0ACD11AB2CF306FB00B328BB /* FlightInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACD11AA2CF306FB00B328BB /* FlightInfo.swift */; };
 		0ACD11AD2CF3070600B328BB /* FlightInfoEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACD11AC2CF3070600B328BB /* FlightInfoEntryView.swift */; };
 		0ACD11AF2CF3070E00B328BB /* ManualFlightEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACD11AE2CF3070E00B328BB /* ManualFlightEntryView.swift */; };
@@ -61,6 +62,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A1A31292CFF0FF2002677EF /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
 		0ACD11AA2CF306FB00B328BB /* FlightInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightInfo.swift; sourceTree = "<group>"; };
 		0ACD11AC2CF3070600B328BB /* FlightInfoEntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightInfoEntryView.swift; sourceTree = "<group>"; };
 		0ACD11AE2CF3070E00B328BB /* ManualFlightEntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManualFlightEntryView.swift; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 				0ACD11AA2CF306FB00B328BB /* FlightInfo.swift */,
 				0ACD11B02CF3071700B328BB /* ScheduledRideView.swift */,
 				687758942CE6815A003CA3E9 /* FlightSearchView.swift */,
+				0A1A31292CFF0FF2002677EF /* ConfirmationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -502,6 +505,7 @@
 				687758692CE67AAA003CA3E9 /* Lion_LiftApp.swift in Sources */,
 				68EA83302CFE56D7009DB5AC /* TextFieldModifier.swift in Sources */,
 				1F80F10E2CE6AC03005FB48E /* CustomerSupportView.swift in Sources */,
+				0A1A312A2CFF0FF2002677EF /* ConfirmationView.swift in Sources */,
 				AF5B2FD22CFEBF3F00711E9C /* Match.swift in Sources */,
 				68EA832C2CFE3BDE009DB5AC /* AuthViewModel.swift in Sources */,
 				AF5B2FD02CFEBF3F00711E9C /* CarpoolManagerViewModel.swift in Sources */,
