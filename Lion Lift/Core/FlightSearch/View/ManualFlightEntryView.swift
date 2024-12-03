@@ -185,7 +185,7 @@ struct ManualFlightEntryView: View {
                         ),
                         flightDate: flightDateTime,
                         flightTime: flightDateTime
-                    ),
+                    ).navigationBarBackButtonHidden(true),
                     isActive: $shouldNavigateToScheduledRide
                 ) {
                     EmptyView()

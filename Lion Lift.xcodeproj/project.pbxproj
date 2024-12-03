@@ -59,6 +59,7 @@
 		AF5B2FEF2CFEF35100711E9C /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FEE2CFEF35100711E9C /* MessageViewModel.swift */; };
 		AF5B2FF12CFEF3C600711E9C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FF02CFEF3C600711E9C /* Message.swift */; };
 		AF5B2FF32CFEF4C700711E9C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FF22CFEF4C700711E9C /* Constants.swift */; };
+		AF5B2FF52CFF152000711E9C /* FlightConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FF42CFF152000711E9C /* FlightConfirmationViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +111,7 @@
 		AF5B2FEE2CFEF35100711E9C /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		AF5B2FF02CFEF3C600711E9C /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		AF5B2FF22CFEF4C700711E9C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = "Lion Lift/Model/Constants.swift"; sourceTree = SOURCE_ROOT; };
+		AF5B2FF42CFF152000711E9C /* FlightConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightConfirmationViewModel.swift; path = "Lion Lift/Model/FlightConfirmationViewModel.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,6 +336,7 @@
 		687758932CE6814B003CA3E9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				AF5B2FF42CFF152000711E9C /* FlightConfirmationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF5B2FF52CFF152000711E9C /* FlightConfirmationViewModel.swift in Sources */,
 				AF5B2FCF2CFEBF3F00711E9C /* RequestSheetView.swift in Sources */,
 				687758952CE6815A003CA3E9 /* FlightSearchView.swift in Sources */,
 				3F9253742CF5152300B0DECF /* CreateNewPassword.swift in Sources */,

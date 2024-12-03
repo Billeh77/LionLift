@@ -12,7 +12,6 @@ import MapKit
 struct User: Identifiable, Decodable {
     @DocumentID var id: String?
     let uid: String
-    var username: String
     var fullname: String
     var profileImageUrl: String?
     var phoneNumber: String
@@ -26,7 +25,6 @@ struct User: Identifiable, Decodable {
     static var dummyUser: User {
         return User(
             uid: "",
-            username: "Johnny",
             fullname: "John Doe",
             profileImageUrl: nil,
             phoneNumber: "0795602606",

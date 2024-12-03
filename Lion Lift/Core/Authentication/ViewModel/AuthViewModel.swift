@@ -22,6 +22,9 @@ class AuthViewModel: ObservableObject {
     init() {
         self.userSession = Auth.auth().currentUser
         print("DEBUG: User session is \(self.userSession?.uid)")
+        if let userSession = self.userSession {
+            self.fetchUser(for: userSession.uid)
+        }
     }
     
     func login(withEmail email: String, password: String) {
@@ -36,7 +39,8 @@ class AuthViewModel: ObservableObject {
             
             guard let user = result?.user else { return }
             self.userSession = user
-            
+            print("Calling fetch user at auth now...")
+            self.fetchUser(for: user.uid)
 //            try await loadUserData()
             
             print("DEBUG: Did log user in")
@@ -57,6 +61,7 @@ class AuthViewModel: ObservableObject {
             
             guard let user = result?.user else { return }
             self.userSession = user
+            self.fetchUser(for: user.uid)
             
             print("DEBUG: Registered user sucessfully")
             
@@ -69,6 +74,7 @@ class AuthViewModel: ObservableObject {
                 .document(user.uid)
                 .setData(data) { _ in
                     print("DEBUG: Did upload user data...")
+                    self.fetchUser(for: user.uid)
                 }
         }
     }
@@ -78,10 +84,16 @@ class AuthViewModel: ObservableObject {
         try? Auth.auth().signOut()
     }
     
-//    func fetchUser(for uid: String) {
-//        service.fetchUser(withUid: uid) { user in
-//            self.currentUser = user
-//            print("DEBUG: Fetched user is \(self.currentUser)")
-//        }
-//    }
+    func fetchUser(for uid: String) {
+        COLLECTION_USERS.document(uid).getDocument { snapshot, error in
+            print("Snapshot \(snapshot)")
+            guard let snapshot = snapshot else { return }
+            
+            guard let user = try? snapshot.data(as: User.self) else { return }
+            
+            self.currentUser = user
+            
+            print("DEBUG: user at auth viewmodel: \(user)")
+        }
+    }
 }

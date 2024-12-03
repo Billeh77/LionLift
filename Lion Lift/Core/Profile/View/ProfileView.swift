@@ -8,19 +8,22 @@ struct ProfileView: View {
         NavigationStack {
             VStack(spacing: 20) {
                 // Profile Details
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Welcome, User!")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    Text("Email: user@example.com")
-                        .foregroundColor(.gray)
+                
+                if let currentUser = viewModel.currentUser {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Welcome, \(currentUser.fullname)!")
+                            .font(.title)
+                            .fontWeight(.bold)
+                        
+                        Text("Email: \(currentUser.email)")
+                            .foregroundColor(.gray)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(Color(.systemGroupedBackground))
+                    .cornerRadius(10)
+                    .shadow(radius: 2)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                .background(Color(.systemGroupedBackground))
-                .cornerRadius(10)
-                .shadow(radius: 2)
                 
                 // Navigation Links
                 VStack(spacing: 12) {

@@ -13,6 +13,8 @@ struct ScheduledRideView: View {
     @State private var navigateToConfirmation = false
 
     @Environment(\.presentationMode) var presentationMode
+    
+    @StateObject private var viewModel = FlightConfirmationViewModel()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -76,12 +78,17 @@ struct ScheduledRideView: View {
                         .cornerRadius(5)
                 }
             }
+            
+            if let error = viewModel.error {
+                Text("\(error)")
+                    .foregroundStyle(.red)
+            }
 
             Spacer()
 
           
             NavigationLink(
-                destination: ConfirmationView(),
+                destination: ConfirmationView().navigationBarBackButtonHidden(true),
                 isActive: $navigateToConfirmation
             ) {
                 EmptyView()
@@ -89,7 +96,10 @@ struct ScheduledRideView: View {
 
        
             Button {
-                navigateToConfirmation = true
+                viewModel.updateFlightInfo(departureAirport: departureAirport, arrivalAirport: arrivalAirport, date: date, time: time)
+                if viewModel.error == nil {
+                    navigateToConfirmation = true
+                }
             } label: {
                 Text("Save Changes")
                     .frame(maxWidth: .infinity)
