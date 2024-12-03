@@ -41,7 +41,7 @@ struct CarpoolsView: View {
                 .padding(.top)
                 
                 TabView(selection: $selectedFilter) {
-                    carpools.tag(CarpoolManagerViewModel.carpools)
+                    CarpoolMatchesView().tag(CarpoolManagerViewModel.carpools)
                     requests.tag(CarpoolManagerViewModel.requests)
                     matches.tag(CarpoolManagerViewModel.matches)
                 }

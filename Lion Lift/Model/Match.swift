@@ -16,6 +16,9 @@ struct Match: Identifiable, Decodable {
     let airport: String
     let dateAndTime: Timestamp
     let departing: Bool
+    let timestamp: Timestamp
+    let lastMessage: String
+    
     
     static var dummyMatch: Match {
         return Match(
@@ -23,6 +26,9 @@ struct Match: Identifiable, Decodable {
             usersFullNames: ["John Doe, Haley Smith"],
             airport: "John F. Kennedy",
             dateAndTime: Timestamp(date: Date()),
-            departing: false)
+            departing: false,
+            timestamp: Timestamp(date: Date()),
+            lastMessage: ""
+            )
     }
 }
