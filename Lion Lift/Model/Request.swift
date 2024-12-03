@@ -1,15 +1,15 @@
 //
-//  Match.swift
-//  Carpools
+//  Request.swift
+//  Lion Lift
 //
-//  Created by Emile Billeh on 14/11/2024.
+//  Created by Emile Billeh on 02/12/2024.
 //
 
 import FirebaseFirestore
 import Firebase
 import MapKit
 
-struct Match: Identifiable, Decodable {
+struct Request: Identifiable, Decodable {
     @DocumentID var id: String?
     let uids: [String]
     let usersFullNames: [String]
@@ -17,7 +17,7 @@ struct Match: Identifiable, Decodable {
     let arrivalAirport: String
     let departureTerminal: String
     let arrivalTerminal: String
-    let meetUpDateAndTime: Timestamp
+    let departureDateAndTime: Timestamp
     let meetUpLocation: String
     let arrival: Bool
     let departure: Bool
@@ -31,7 +31,7 @@ struct Match: Identifiable, Decodable {
             arrivalAirport: "John F. Kennedy",
             departureTerminal: "Terminal 5",
             arrivalTerminal: "Terminal 5",
-            meetUpDateAndTime: Timestamp(date: Date()),
+            departureDateAndTime: Timestamp(date: Date()),
             meetUpLocation: "201 W 105th St",
             arrival: true,
             departure: false)

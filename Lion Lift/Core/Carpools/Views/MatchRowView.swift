@@ -40,7 +40,7 @@ struct MatchRowView: View {
                 Text(match.departureAirport + ", " + match.departureTerminal)
                     .font(.footnote)
                     .foregroundColor(.gray)
-                Text(formatTimestamp(match.meetUpDateAndTime))
+                Text(formatTimestamp(match.departureDateAndTime))
                     .font(.footnote)
                     .foregroundColor(.gray)
             }

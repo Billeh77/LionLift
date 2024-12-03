@@ -10,6 +10,12 @@ struct SignUpView: View {
     @State private var navigateToLogin = false
 
     @EnvironmentObject var viewModel: AuthViewModel
+    
+    @State private var imagePickerPresented = false
+    @State private var selectedImage: UIImage?
+    @State private var profileImage: Image?
+    
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -21,6 +27,30 @@ struct SignUpView: View {
                         .font(.custom("Gilroy ☞", size: 24).weight(.bold))
                         .foregroundColor(.white)
                         .padding(.top, 50)
+                    
+                    Button(action: { imagePickerPresented.toggle() }, label: {
+                        
+                        if let profileImage = profileImage {
+                            profileImage
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 180, height: 180)
+                                .clipShape(Circle())
+                        } else {
+                            Image("plus_photo")
+                                .resizable()
+                                .renderingMode(.template)
+                                .scaledToFill()
+                                .frame(width: 180, height: 180)
+                                .clipped()
+                                .padding(.top, 44)
+                                .foregroundColor(.black)
+                        }
+                    })
+                    .sheet(isPresented: $imagePickerPresented,
+                           onDismiss: loadImage, content: {
+                        ImagePicker(showPicker: $imagePickerPresented, image: $selectedImage, sourceType: .photoLibrary)
+                    })
 
                     CustomInputField(placeholder: "Columbia Email", text: $email)
                         .autocapitalization(.none)
@@ -59,5 +89,10 @@ struct SignUpView: View {
                 .padding(.horizontal, 20)
             }
         }
+    }
+    
+    func loadImage() {
+        guard let selectedImage = selectedImage else { return }
+        profileImage = Image(uiImage: selectedImage)
     }
 }

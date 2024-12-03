@@ -11,7 +11,7 @@ import Firebase
 
 struct RequestRowView: View {
     let user: User
-    let flight: Flight
+    let match: Match
     var body: some View {
         VStack {
             
@@ -50,10 +50,10 @@ struct RequestRowView: View {
                     Text(user.fullname)
                         .font(.footnote).bold()
                         .foregroundColor(.black)
-                    Text(flight.departureAirport + ", " + flight.departureTerminal)
+                    Text(match.departureAirport + ", " + match.departureTerminal)
                         .font(.footnote)
                         .foregroundColor(.gray)
-                    Text(formatTimestamp(flight.departureDateAndTime))
+                    Text(formatTimestamp(match.departureDateAndTime))
                         .font(.footnote)
                         .foregroundColor(.gray)
                 }
@@ -99,5 +99,5 @@ struct RequestRowView: View {
 }
 
 #Preview {
-    RequestRowView(user: User.dummyUser, flight: Flight.dummyFlight)
+    RequestRowView(user: User.dummyUser, match: Match.dummyMatch)
 }
