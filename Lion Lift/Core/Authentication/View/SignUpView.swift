@@ -5,9 +5,11 @@ struct SignUpView: View {
     @State private var email: String = ""
     @State private var phoneNumber: String = ""
     @State private var password: String = ""
+    @State private var fullName: String = ""
     @State private var errorMessage: String? = nil
     @State private var navigateToLogin = false
 
+    @EnvironmentObject var viewModel: AuthViewModel
     var body: some View {
         NavigationStack {
             ZStack {
@@ -24,6 +26,7 @@ struct SignUpView: View {
                         .autocapitalization(.none)
                     CustomInputField(placeholder: "Phone Number", text: $phoneNumber)
                     CustomInputField(placeholder: "Password", isSecure: true, text: $password)
+                    CustomInputField(placeholder: "Full Name", text: $fullName)
 
                     if let errorMessage = errorMessage {
                         Text(errorMessage)
@@ -32,11 +35,11 @@ struct SignUpView: View {
                             .padding(.horizontal, 10)
                     }
 
-                    CustomButton(
-                        title: "Create Account",
-                        backgroundColor: Color(red: 0, green: 0.22, blue: 0.40),
-                        action: handleSignUp
-                    )
+                    Button {
+                        viewModel.register(withEmail: email, password: password, phoneNumebr: phoneNumber, fullname: fullName)
+                    } label: {
+                        Text("Sign Up")
+                    }
 
                     Spacer()
 
@@ -54,31 +57,6 @@ struct SignUpView: View {
                     .padding(.bottom, 50)
                 }
                 .padding(.horizontal, 20)
-            }
-        }
-    }
-
-    func handleSignUp() {
-        errorMessage = nil
-
-        guard !email.isEmpty, email.contains("@") else {
-            errorMessage = "Please enter a valid email."
-            return
-        }
-
-        guard !password.isEmpty else {
-            errorMessage = "Password cannot be empty."
-            return
-        }
-
-        // Firebase
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    errorMessage = error.localizedDescription
-                    return
-                }
-                navigateToLogin = true
             }
         }
     }

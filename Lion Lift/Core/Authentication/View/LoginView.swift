@@ -10,6 +10,9 @@ struct LoginView: View {
     @State private var navigateToSignup = false
     @State private var navigateToForgotPassword = false
     @State private var navigateToMainTab = false
+    
+    @EnvironmentObject var viewModel: AuthViewModel
+    
 
     var body: some View {
         NavigationStack {
@@ -18,10 +21,12 @@ struct LoginView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
+                    
+                    Spacer()
+                    
                     Text("Login")
-                        .font(.custom("Poppins", size: 24).weight(.bold))
-                        .foregroundColor(.white)
-                        .padding(.top, 50)
+                        .font(.title2)
+                        .foregroundStyle(.white)
 
                     CustomInputField(placeholder: "Email", text: $email)
                         .autocapitalization(.none)
@@ -38,13 +43,22 @@ struct LoginView: View {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: .white))
                     } else {
-                        CustomButton(
-                            title: "Login",
-                            backgroundColor: Color(red: 0, green: 0.22, blue: 0.40),
-                            action: handleLogin
-                        )
+                        Button {
+                            viewModel.login(withEmail: email, password: password)
+                        } label: {
+                            Text("Log In")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.black)
+                                .frame(width: 360, height: 44)
+                                .background(.white)
+                                .cornerRadius(8)
+                                .padding(.vertical)
+                        }
                     }
 
+                    Spacer()
+                    
                     Spacer()
 
                     HStack(spacing: 5) {
@@ -60,35 +74,6 @@ struct LoginView: View {
                     }
                 }
                 .padding(.horizontal, 20)
-            }
-        }
-    }
-
-    func handleLogin() {
-        errorMessage = nil
-        isLoading = true
-
-        guard !email.isEmpty else {
-            errorMessage = "Email cannot be empty."
-            isLoading = false
-            return
-        }
-
-        guard !password.isEmpty else {
-            errorMessage = "Password cannot be empty."
-            isLoading = false
-            return
-        }
-
-        // Firebase
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            DispatchQueue.main.async {
-                isLoading = false
-                if let error = error {
-                    errorMessage = error.localizedDescription
-                    return
-                }
-                navigateToMainTab = true
             }
         }
     }

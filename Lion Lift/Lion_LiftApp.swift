@@ -8,10 +8,22 @@
 
 
 import SwiftUI
+import FirebaseCore
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    FirebaseApp.configure()
+    return true
+  }
+}
 
 @main
 struct Lion_LiftApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     @State private var isLoading = true // Manage loading state
+    @StateObject var viewModel = AuthViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -23,18 +35,12 @@ struct Lion_LiftApp: App {
                         }
                     }
             } else {
-                LoginView()
+                NavigationView {
+                    ContentView()
+                }
+                .environmentObject(viewModel)
             }
         }
     }
 }
-//import SwiftUI
-//
-//@main
-//struct Lion_LiftApp: App {
-//    var body: some Scene {
-//        WindowGroup {
-//            MainTabView()
-//        }
-//    }
-//}
+

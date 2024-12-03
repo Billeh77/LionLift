@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct ProfileView: View {
+    
+    @State private var logoutHit = false
+    @EnvironmentObject var viewModel: AuthViewModel
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
@@ -53,6 +56,24 @@ struct ProfileView: View {
             }
             .padding()
             .navigationTitle("Profile")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        logoutHit.toggle()
+                    } label: {
+                        Image(systemName: "rectangle.portrait.and.arrow.right.fill")
+                            .foregroundStyle(.black)
+                    }
+                    .alert("Are you sure you want to log out?", isPresented: $logoutHit) {
+                                    Button("Yes, Logout", role: .destructive) {
+                                        viewModel.signOut()
+                                    }
+                                    Button("Cancel", role: .cancel) {
+                                        print("Logout canceled")
+                                    }
+                                }
+                }
+            }
         }
     }
 }

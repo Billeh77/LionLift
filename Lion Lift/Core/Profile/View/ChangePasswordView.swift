@@ -1,3 +1,5 @@
+import SwiftUI
+
 struct ChangePasswordView: View {
     @State private var currentPassword: String = ""
     @State private var newPassword: String = ""

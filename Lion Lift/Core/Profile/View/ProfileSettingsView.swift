@@ -1,6 +1,9 @@
+import SwiftUI
+
+
 struct ProfileSettingsView: View {
     @State private var username: String = "Liam Parker"
-    @State private var email: String = "liamparker@tmail.com"
+    @State private var email: String = "liamparker@gmail.com"
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
