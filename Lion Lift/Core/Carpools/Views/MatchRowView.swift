@@ -1,0 +1,82 @@
+//
+//  MatchRowView.swift
+//  Carpools
+//
+//  Created by Emile Billeh on 14/11/2024.
+//
+
+import SwiftUI
+import Kingfisher
+import Firebase
+
+struct MatchRowView: View {
+    let user: User
+    let match: Match
+    @State private var showRequestSheet = false
+    var body: some View {
+        HStack {
+            if let profileImageUrl = user.profileImageUrl {
+                KFImage(URL(string: profileImageUrl))
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 65, height: 65)
+                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            } else {
+                ZStack {
+                    Circle()
+                        .foregroundColor(.gray)
+                        .frame(width: 65, height: 65)
+                    Image(systemName: "person")
+                        .resizable()
+                        .frame(width: 22, height: 22)
+                        .foregroundColor(.white)
+                }
+            }
+                
+            VStack (alignment: .leading, spacing: 4) {
+                Text(user.fullname)
+                    .font(.footnote).bold()
+                    .foregroundColor(.black)
+                Text(match.departureAirport + ", " + match.departureTerminal)
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+                Text(formatTimestamp(match.meetUpDateAndTime))
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+            }
+            Spacer()
+            
+            
+            Button {
+                showRequestSheet.toggle()
+            } label: {
+                Text("Request")
+                    .padding(10)
+                    .background(.blue)
+                    .foregroundStyle(.white)
+                    .font(.caption)
+                    .cornerRadius(5)
+                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+            }
+            .sheet(isPresented: $showRequestSheet) {
+                RequestSheetView()
+                    .ignoresSafeArea()
+                    .presentationDetents([.fraction(0.5), .fraction(0.6)])
+            }
+            
+        }
+        .padding(.horizontal)
+    }
+    
+    private func formatTimestamp(_ timestamp: Timestamp) -> String {
+        let date = timestamp.dateValue()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: date)
+    }
+}
+
+#Preview {
+    MatchRowView(user: User.dummyUser, match: Match.dummyMatch)
+}
