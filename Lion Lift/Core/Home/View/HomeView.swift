@@ -36,7 +36,7 @@ struct HomeView: View {
                 .padding()
             }
             .sheet(isPresented: $isShowFlight) {
-                FlightSearchView()
+                FlightInfoEntryView()
             }
         }
     }

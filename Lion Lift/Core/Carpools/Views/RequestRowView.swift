@@ -50,10 +50,10 @@ struct RequestRowView: View {
                     Text(user.fullname)
                         .font(.footnote).bold()
                         .foregroundColor(.black)
-                    Text(match.departureAirport + ", " + match.departureTerminal)
+                    Text(match.airport)
                         .font(.footnote)
                         .foregroundColor(.gray)
-                    Text(formatTimestamp(match.departureDateAndTime))
+                    Text(formatTimestamp(match.dateAndTime))
                         .font(.footnote)
                         .foregroundColor(.gray)
                 }

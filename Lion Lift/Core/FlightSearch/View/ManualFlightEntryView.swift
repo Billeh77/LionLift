@@ -8,6 +8,7 @@ struct ManualFlightEntryView: View {
     @State private var numberOfPassengers = 1
     @State private var luggageQuantity = 1
     @State private var shouldNavigateToScheduledRide = false
+    @State private var departing = false
 
     let airports = ["JFK", "LGA", "EWR"]
     let terminalsByAirport: [String: [String]] = [
@@ -50,9 +51,39 @@ struct ManualFlightEntryView: View {
                     .padding(.bottom, 10)
 
                 VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Departing or arriving to NYC?")
+                            .font(Font.custom("Roboto Flex", size: 16))
+                            .foregroundColor(.black)
+                        Menu {
+                            Button(action: {
+                                departing = true
+                            }) {
+                                Text("Departing NYC")
+                            }
+                            Button(action: {
+                                departing = false
+                            }) {
+                                Text("Arriving to NYC")
+                            }
+                        } label: {
+                            HStack {
+                                Text(departing ? "Departing NYC" : "Arriving to NYC")
+                                    .foregroundColor(.black)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Image(systemName: "chevron.down")
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding(.vertical, 8)
+                            .padding(.horizontal)
+                            .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Box color
+                            .cornerRadius(5)
+                        }
+                        Divider() // Thin line
+                    }
                     // Airport Dropdown
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Airport")
+                        Text(departing ? "Departure Airport" : "Arrival Airport")
                             .font(Font.custom("Roboto Flex", size: 16))
                             .foregroundColor(.black)
                         Menu {

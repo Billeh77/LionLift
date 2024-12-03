@@ -14,6 +14,8 @@ struct ScheduledRideView: View {
     @State private var time: Date = Date()
     @State private var passengers: Int = 1
     @State private var luggage: Int = 1
+    @Environment(\.presentationMode) var presentationMode
+
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -57,21 +59,21 @@ struct ScheduledRideView: View {
             }
 
             // Date
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Date:")
-                    .font(Font.custom("Roboto Flex", size: 16))
-                TextField("Date", text: $date)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
-                    .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
-                    .cornerRadius(5)
-            }
+//            VStack(alignment: .leading, spacing: 4) {
+//                Text("Date:")
+//                    .font(Font.custom("Roboto Flex", size: 16))
+//                TextField("Date", text: $date)
+//                    .padding(.vertical, 8)
+//                    .padding(.horizontal)
+//                    .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
+//                    .cornerRadius(5)
+//            }
 
             // Time
             VStack(alignment: .leading, spacing: 4) {
-                Text("Time:")
+                Text("Date and time:")
                     .font(Font.custom("Roboto Flex", size: 16))
-                DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
+                DatePicker("", selection: $time, displayedComponents: [.hourAndMinute, .date])
                     .labelsHidden()
                    
                     .background(Color(red: 0.61, green: 0.79, blue: 0.92)) // Light blue
@@ -105,7 +107,14 @@ struct ScheduledRideView: View {
             Spacer()
 
             // Save Changes Button
-            NavigationLink(destination: HomeView()) {
+//            NavigationLink(destination: HomeView()) {
+//                
+//            }
+//            .padding(.horizontal)
+            
+            Button {
+                presentationMode.wrappedValue.dismiss()
+            } label: {
                 Text("Save Changes")
                     .frame(maxWidth: .infinity)
                     .padding()

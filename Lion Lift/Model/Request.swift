@@ -23,8 +23,8 @@ struct Request: Identifiable, Decodable {
     let departure: Bool
 //    var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == id }
     
-    static var dummyMatch: Match {
-        return Match(
+    static var dummyRequest: Request {
+        return Request(
             uids: [],
             usersFullNames: ["John Doe, Haley Smith"],
             departureAirport: "John F. Kennedy",
