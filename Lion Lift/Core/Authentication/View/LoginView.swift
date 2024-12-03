@@ -4,7 +4,7 @@ import FirebaseAuth
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var errorMessage: String? = nil
+    @State private var errorMessage = ""
     @State private var isLoading: Bool = false
 
     @State private var navigateToSignup = false
@@ -15,6 +15,7 @@ struct LoginView: View {
     
 
     var body: some View {
+        
         NavigationStack {
             ZStack {
                 Color(red: 0.61, green: 0.80, blue: 0.92)
@@ -26,18 +27,33 @@ struct LoginView: View {
                     
                     Text("Login")
                         .font(.title2)
+                        .bold()
                         .foregroundStyle(.white)
-
-                    CustomInputField(placeholder: "Email", text: $email)
-                        .autocapitalization(.none)
-                    CustomInputField(placeholder: "Password", isSecure: true, text: $password)
-
-                    if let errorMessage = errorMessage {
-                        Text(errorMessage)
-                            .font(.custom("Roboto", size: 13))
+                    
+                    if !viewModel.errorMessage.isEmpty {
+                        Text("Incorrect username or password, please try again")
+                            .font(.caption)
                             .foregroundColor(.red)
-                            .padding(.horizontal, 10)
                     }
+                    
+
+                    TextField("Email", text: $email)
+                        .autocapitalization(.none)
+                        .modifier(TextFieldModifier())
+                    
+                    SecureField("Password", text: $password)
+                        .modifier(TextFieldModifier())
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("Forgot password?")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                            .padding(.trailing, 24)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
+
 
                     if isLoading {
                         ProgressView()
@@ -61,20 +77,24 @@ struct LoginView: View {
                     
                     Spacer()
 
-                    HStack(spacing: 5) {
-                        Text("Don’t have an account?")
-                            .font(.custom("Roboto", size: 13).weight(.medium))
-                            .foregroundColor(Color(red: 0.28, green: 0.28, blue: 0.28))
-                        NavigationLink(destination: SignUpView(), isActive: $navigateToSignup) {
-                            Text("Sign Up")
-                                .font(.custom("Roboto", size: 13).weight(.medium))
-                                .foregroundColor(.white)
-                                .underline()
-                        }
+                    NavigationLink {
+                        SignUpView()
+                    } label: {
+                        Text("Don't have an account? ")
+                            .font(.caption)
+                            .foregroundStyle(.black) +
+                        
+                        Text("Sign Up")
+                            .foregroundStyle(.white)
+                            .font(.caption)
+                            .bold()
                     }
                 }
-                .padding(.horizontal, 20)
+            }
+            .onAppear() {
+                viewModel.errorMessage = ""
             }
         }
+        .tint(.black)
     }
 }
