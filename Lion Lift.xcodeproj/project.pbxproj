@@ -37,6 +37,9 @@
 		68EA832C2CFE3BDE009DB5AC /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EA832B2CFE3BDE009DB5AC /* AuthViewModel.swift */; };
 		68EA832E2CFE44EF009DB5AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68EA832D2CFE44EF009DB5AC /* GoogleService-Info.plist */; };
 		68EA83302CFE56D7009DB5AC /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EA832F2CFE56D7009DB5AC /* TextFieldModifier.swift */; };
+		68EA833F2D02385E009DB5AC /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EA833E2D02385E009DB5AC /* ImageUploader.swift */; };
+		68EA83412D02391A009DB5AC /* ProfilePhotoSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EA83402D02391A009DB5AC /* ProfilePhotoSelectorView.swift */; };
+		68EA83432D023A12009DB5AC /* EditProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EA83422D023A12009DB5AC /* EditProfileSheet.swift */; };
 		AF5B2FCB2CFEBF3F00711E9C /* CarpoolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FBF2CFEBF3F00711E9C /* CarpoolsView.swift */; };
 		AF5B2FCC2CFEBF3F00711E9C /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FC02CFEBF3F00711E9C /* ChatBubble.swift */; };
 		AF5B2FCD2CFEBF3F00711E9C /* MatchRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FC12CFEBF3F00711E9C /* MatchRowView.swift */; };
@@ -91,6 +94,9 @@
 		68EA832B2CFE3BDE009DB5AC /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		68EA832D2CFE44EF009DB5AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		68EA832F2CFE56D7009DB5AC /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
+		68EA833E2D02385E009DB5AC /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageUploader.swift; path = "Lion Lift/Core/Profile/View/ImageUploader.swift"; sourceTree = SOURCE_ROOT; };
+		68EA83402D02391A009DB5AC /* ProfilePhotoSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoSelectorView.swift; sourceTree = "<group>"; };
+		68EA83422D023A12009DB5AC /* EditProfileSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileSheet.swift; sourceTree = "<group>"; };
 		AF5B2FBF2CFEBF3F00711E9C /* CarpoolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarpoolsView.swift; sourceTree = "<group>"; };
 		AF5B2FC02CFEBF3F00711E9C /* ChatBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
 		AF5B2FC12CFEBF3F00711E9C /* MatchRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchRowView.swift; sourceTree = "<group>"; };
@@ -199,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				AF5B2FD92CFECA7500711E9C /* ImagePicker.swift */,
+				68EA833E2D02385E009DB5AC /* ImageUploader.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -265,6 +272,7 @@
 				1F80F1092CE6ABD4005FB48E /* ProfileSettingsView.swift */,
 				1F80F10B2CE6ABF1005FB48E /* ChangePasswordView.swift */,
 				1F80F10D2CE6AC03005FB48E /* CustomerSupportView.swift */,
+				68EA83422D023A12009DB5AC /* EditProfileSheet.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -285,6 +293,7 @@
 				3F9253692CF5152300B0DECF /* LoginView.swift */,
 				3F9253672CF5152300B0DECF /* SignUpView.swift */,
 				3F92536C2CF5152300B0DECF /* VerifyCode.swift */,
+				68EA83402D02391A009DB5AC /* ProfilePhotoSelectorView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -480,6 +489,7 @@
 			files = (
 				AF5B2FF52CFF152000711E9C /* FlightConfirmationViewModel.swift in Sources */,
 				AF5B2FCF2CFEBF3F00711E9C /* RequestSheetView.swift in Sources */,
+				68EA83432D023A12009DB5AC /* EditProfileSheet.swift in Sources */,
 				687758952CE6815A003CA3E9 /* FlightSearchView.swift in Sources */,
 				3F9253742CF5152300B0DECF /* CreateNewPassword.swift in Sources */,
 				1F80F10A2CE6ABD4005FB48E /* ProfileSettingsView.swift in Sources */,
@@ -495,6 +505,7 @@
 				AF5B2FEB2CFEF31800711E9C /* MatchCellViewModel.swift in Sources */,
 				AF5B2FE52CFEF15100711E9C /* ChannelView.swift in Sources */,
 				AF5B2FED2CFEF34000711E9C /* ChannelViewModel.swift in Sources */,
+				68EA833F2D02385E009DB5AC /* ImageUploader.swift in Sources */,
 				0ACD11B12CF3071700B328BB /* ScheduledRideView.swift in Sources */,
 				AF5B2FE92CFEF2EA00711E9C /* MatchesViewModel.swift in Sources */,
 				AF5B2FE72CFEF18E00711E9C /* MessageInputView.swift in Sources */,
@@ -509,6 +520,7 @@
 				3F92536E2CF5152300B0DECF /* SignUpView.swift in Sources */,
 				0ACD11AB2CF306FB00B328BB /* FlightInfo.swift in Sources */,
 				AF5B2FF12CFEF3C600711E9C /* Message.swift in Sources */,
+				68EA83412D02391A009DB5AC /* ProfilePhotoSelectorView.swift in Sources */,
 				AF5B2FCE2CFEBF3F00711E9C /* RequestRowView.swift in Sources */,
 				687758692CE67AAA003CA3E9 /* Lion_LiftApp.swift in Sources */,
 				68EA83302CFE56D7009DB5AC /* TextFieldModifier.swift in Sources */,

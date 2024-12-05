@@ -114,7 +114,7 @@ struct FlightInfoEntryView: View {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("e8598f49d5msh6a93870f137bae6p1e12ebjsn81e119e0fe4d", forHTTPHeaderField: "x-rapidapi-key")
+        request.addValue("c2222cfb6cmsh7a7d51a6488c10ep1b76b3jsn25c49be2406a", forHTTPHeaderField: "x-rapidapi-key")
         request.addValue("flightera-flight-data.p.rapidapi.com", forHTTPHeaderField: "x-rapidapi-host")
 
         URLSession.shared.dataTask(with: request) { data, response, error in

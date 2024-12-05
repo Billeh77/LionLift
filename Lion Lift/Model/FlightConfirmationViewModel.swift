@@ -26,7 +26,7 @@ class FlightConfirmationViewModel: ObservableObject {
 
         // Step 2: Merge date and time
         let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "d MMM yyyy"
+                dateFormatter.dateFormat = "MMM dd, yyyy"
                 
                 guard let parsedDate = dateFormatter.date(from: date) else {
                     error = "Invalid date format."

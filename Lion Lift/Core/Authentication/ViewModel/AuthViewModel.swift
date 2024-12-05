@@ -16,15 +16,15 @@ class AuthViewModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
     @Published var currentUser: User?
     @Published var errorMessage: String = ""
+    @Published var didAuthenticateUser = false
+    
+    private var tempUserSession: FirebaseAuth.User?
     
     static var shared = AuthViewModel()
     
     init() {
         self.userSession = Auth.auth().currentUser
-        print("DEBUG: User session is \(self.userSession?.uid)")
-        if let userSession = self.userSession {
-            self.fetchUser(for: userSession.uid)
-        }
+        fetchUser()
     }
     
     func login(withEmail email: String, password: String) {
@@ -39,16 +39,14 @@ class AuthViewModel: ObservableObject {
             
             guard let user = result?.user else { return }
             self.userSession = user
-            print("Calling fetch user at auth now...")
-            self.fetchUser(for: user.uid)
-//            try await loadUserData()
+            
             
             print("DEBUG: Did log user in")
             
         }
     }
     
-    func register(withEmail email: String, password: String, phoneNumebr: String, fullname: String) {
+    func register(withEmail email: String, password: String, phoneNumebr: String, fullname: String, profileImageUrl: UIImage?, nextFlightDateAndTime: String, nextFlightAirport: String, departing: Bool) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             
             
@@ -60,21 +58,24 @@ class AuthViewModel: ObservableObject {
             }
             
             guard let user = result?.user else { return }
-            self.userSession = user
-            self.fetchUser(for: user.uid)
+            self.tempUserSession = user
             
             print("DEBUG: Registered user sucessfully")
             
             let data = ["email": email,
                         "phoneNumber": phoneNumebr,
                         "fullname": fullname,
-                        "uid": user.uid]
+                        "uid": user.uid,
+                        "nextFlightDateAndTime": Timestamp(date: Date()),
+                        "nextFlightAirport": nextFlightAirport,
+                        "departing": departing]
+            
+            
             
             Firestore.firestore().collection("users")
                 .document(user.uid)
                 .setData(data) { _ in
-                    print("DEBUG: Did upload user data...")
-                    self.fetchUser(for: user.uid)
+                    self.didAuthenticateUser = true
                 }
         }
     }
@@ -84,16 +85,66 @@ class AuthViewModel: ObservableObject {
         try? Auth.auth().signOut()
     }
     
-    func fetchUser(for uid: String) {
-        COLLECTION_USERS.document(uid).getDocument { snapshot, error in
-            print("Snapshot \(snapshot)")
-            guard let snapshot = snapshot else { return }
-            
-            guard let user = try? snapshot.data(as: User.self) else { return }
-            
+    func uploadProfileImage(_ image: UIImage) {
+        guard let uid = tempUserSession?.uid else { return }
+        
+        ImageUploader.uploadImage(image: image) { profileImageUrl in
+            Firestore.firestore().collection("users")
+                .document(uid)
+                .updateData(["profileImageUrl": profileImageUrl]) { _ in
+                    self.userSession = self.tempUserSession
+                }
+        }
+    }
+    
+    func serviceFetchUser(withUid uid: String, completion: @escaping(User) -> Void) {
+        Firestore.firestore().collection("users")
+            .document(uid)
+            .getDocument { snapshot, _ in
+                guard let snapshot = snapshot else { return }
+                
+                guard let user = try? snapshot.data(as: User.self) else { return }
+                
+                
+                
+                completion(user)
+            }
+    }
+    
+    func fetchUser() {
+        guard let uid = self.userSession?.uid else { return }
+        
+        serviceFetchUser(withUid: uid) { user in
             self.currentUser = user
+        }
+    }
+    
+    func changePassword(currentPassword: String, newPassword: String, completion: @escaping (Bool, String?) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            completion(false, "No user is logged in.")
+            return
+        }
+
+        guard let email = user.email else {
+            completion(false, "User email is unavailable.")
+            return
+        }
+
+        let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
+        user.reauthenticate(with: credential) { _, error in
+            if let error = error {
+                completion(false, "Reauthentication failed: \(error.localizedDescription)")
+                return
+            }
             
-            print("DEBUG: user at auth viewmodel: \(user)")
+            user.updatePassword(to: newPassword) { error in
+                if let error = error {
+                    completion(false, "Failed to update password: \(error.localizedDescription)")
+                } else {
+                    completion(true, nil)
+                }
+            }
         }
     }
 }
+

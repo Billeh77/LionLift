@@ -10,11 +10,10 @@ struct SignUpView: View {
     @State private var navigateToLogin = false
     @State private var showHidePassword = false
 
+    @Environment (\.dismiss) var dismiss
+    
     @EnvironmentObject var viewModel: AuthViewModel
     
-    @State private var imagePickerPresented = false
-    @State private var selectedImage: UIImage?
-    @State private var profileImage: Image?
     
     
     var body: some View {
@@ -25,39 +24,17 @@ struct SignUpView: View {
 
                 VStack(spacing: 20) {
                     
+                    NavigationLink(destination: ProfilePhotoSelectorView(),
+                                   isActive: $viewModel.didAuthenticateUser,
+                                   label: { })
+                    
                     Spacer()
                     
                     Text("Create New Account")
-                        .font(.custom("Gilroy ☞", size: 24).weight(.bold))
-                        .foregroundColor(.white)
-                        .padding(.top, 50)
-                    
-                    Button(action: { imagePickerPresented.toggle() }, label: {
-                        
-                        if let profileImage = profileImage {
-                            profileImage
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 180, height: 180)
-                                .clipShape(Circle())
-                        } else {
-                            Image(systemName: "person.fill.badge.plus")
-                                .resizable()
-                                .renderingMode(.template)
-                                .scaledToFill()
-                                .frame(width: 180, height: 180)
-                                .clipped()
-                                .padding(.top, 44)
-                                .foregroundColor(.black)
-                        }
-                    })
-                    .sheet(isPresented: $imagePickerPresented,
-                           onDismiss: loadImage, content: {
-                        ImagePicker(showPicker: $imagePickerPresented, image: $selectedImage, sourceType: .photoLibrary)
-                    })
                         .font(.title2)
                         .bold()
                         .foregroundStyle(.white)
+                    
                     
                     Text(viewModel.errorMessage)
                         .font(.caption)
@@ -94,7 +71,18 @@ struct SignUpView: View {
                         .modifier(TextFieldModifier())
 
                     Button {
-                        viewModel.register(withEmail: email, password: password, phoneNumebr: phoneNumber, fullname: fullName)
+                        if validateEmail(email) {
+                            viewModel.register(withEmail: email,
+                                               password: password,
+                                               phoneNumebr: phoneNumber,
+                                               fullname: fullName,
+                                               profileImageUrl: nil,
+                                               nextFlightDateAndTime: "",
+                                               nextFlightAirport: "",
+                                               departing: false)
+                        } else {
+                            viewModel.errorMessage = "Please use a valid @columbia.edu email address."
+                        }
                     } label: {
                         Text("Sign Up")
                             .font(.subheadline)
@@ -111,8 +99,8 @@ struct SignUpView: View {
                     
                     Spacer()
 
-                    NavigationLink {
-                        
+                    Button {
+                        dismiss()
                     } label: {
                         Text("Already have an account? ")
                             .font(.caption)
@@ -128,8 +116,10 @@ struct SignUpView: View {
         }
     }
     
-    func loadImage() {
-        guard let selectedImage = selectedImage else { return }
-        profileImage = Image(uiImage: selectedImage)
+    private func validateEmail(_ email: String) -> Bool {
+        let emailRegex = #"^[A-Z0-9a-z._%+-]+@columbia\.edu$"#
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
     }
 }
+
