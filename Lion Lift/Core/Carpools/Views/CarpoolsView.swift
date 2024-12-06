@@ -70,8 +70,8 @@ extension CarpoolsView {
         VStack {
             ScrollView {
                 LazyVStack {
-                    ForEach(0..<5, id: \.self) { _ in
-                        RequestRowView(user: User.dummyUser, match: Match.dummyMatch)
+                    ForEach(viewModel.requests) { request in
+                        RequestRowView(request: request)
                             .padding(.vertical)
                     }
                     Spacer()

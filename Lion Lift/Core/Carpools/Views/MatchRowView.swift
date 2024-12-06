@@ -58,7 +58,7 @@ struct MatchRowView: View {
                     .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
             }
             .sheet(isPresented: $showRequestSheet) {
-                RequestSheetView(receivingUid: match.uid)
+                RequestSheetView(match: match)
                     .ignoresSafeArea()
                     .presentationDetents([.fraction(0.5), .fraction(0.6)])
             }

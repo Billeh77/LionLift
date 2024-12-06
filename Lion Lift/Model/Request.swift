@@ -12,11 +12,14 @@ import MapKit
 struct Request: Identifiable, Decodable {
     @DocumentID var id: String?
     let uid: String
-    let fullName: String
+    let fullname: String
     let airport: String
     let flightDateAndTime: Timestamp
     let departing: Bool
     let message: String
+    let profileImageUrl: String?
+    let timestamp: Timestamp
+    let matchId: String
 //    var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == id }
     
 //    static var dummyRequest: Request {
