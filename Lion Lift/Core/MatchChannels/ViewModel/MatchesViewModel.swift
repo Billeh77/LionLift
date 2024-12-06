@@ -48,6 +48,9 @@ class MatchesViewModel: ObservableObject {
             }
             
             self.matches.sort { $0.timestamp.dateValue() > $1.timestamp.dateValue() }
+            
+            let oneDayAgo = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+            self.matches = self.matches.filter { $0.dateAndTime.dateValue() > oneDayAgo }
         }
     }
 
