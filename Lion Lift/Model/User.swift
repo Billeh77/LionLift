@@ -9,7 +9,7 @@ import FirebaseFirestore
 import Firebase
 import MapKit
 
-struct User: Identifiable, Decodable {
+struct User: Identifiable, Decodable, Hashable {
     @DocumentID var id: String?
     let uid: String
     var fullname: String
