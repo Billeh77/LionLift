@@ -24,10 +24,23 @@ struct CarpoolMatchesView: View {
             
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(viewModel.matches) { channel in
-                        MatchCell(viewModel: MatchCellViewModel(channel))
+                    if !viewModel.matches.isEmpty {
+                        ForEach(viewModel.matches) { channel in
+                            if channel.uids.count > 1 {
+                                MatchCell(viewModel: MatchCellViewModel(channel))
+                            }
+                        }
+                        HStack { Spacer() }
+                    } else {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Text("You have no carpools yet")
+                                .foregroundStyle(.gray)
+                            Spacer()
+                        }
+                        Spacer()
                     }
-                    HStack { Spacer() }
                 }
             }
         }

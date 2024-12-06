@@ -18,6 +18,7 @@ struct MessageView: View {
                 
                 Text(viewModel.message.text)
                     .padding(12)
+                    .padding(.trailing, 5)
                     .background(Color.blue)
                     .font(.system(size: 15))
                     .clipShape(BubbleShape(myMessage: true))

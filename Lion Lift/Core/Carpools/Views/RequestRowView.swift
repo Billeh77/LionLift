@@ -10,13 +10,17 @@ import Kingfisher
 import Firebase
 
 struct RequestRowView: View {
-    let user: User
-    let match: Match
+    let request: Request
+    var viewModel: RequestRowViewModel
+    init(request: Request) {
+        self.request = request
+        self.viewModel = RequestRowViewModel(request: request)
+    }
     var body: some View {
         VStack {
             
             HStack {
-                Text("hey I am  thinking about leaving columbia at around 4:30 to head to jfk, are you down to carpool?")
+                Text(request.message)
                     .padding(12)
                     .background(Color.blue)
                     .font(.system(size: 15))
@@ -28,7 +32,7 @@ struct RequestRowView: View {
             }
             
             HStack {
-                if let profileImageUrl = user.profileImageUrl {
+                if let profileImageUrl = request.profileImageUrl {
                     KFImage(URL(string: profileImageUrl))
                         .resizable()
                         .scaledToFill()
@@ -47,20 +51,20 @@ struct RequestRowView: View {
                 }
                 
                 VStack (alignment: .leading, spacing: 4) {
-                    Text(user.fullname)
+                    Text(request.fullname)
                         .font(.footnote).bold()
                         .foregroundColor(.black)
-                    Text(match.airport)
+                    Text(request.airport)
                         .font(.footnote)
                         .foregroundColor(.gray)
-                    Text(formatTimestamp(match.dateAndTime))
+                    Text(formatTimestamp(request.flightDateAndTime))
                         .font(.footnote)
                         .foregroundColor(.gray)
                 }
                 Spacer()
                 
                 Button {
-                    // Ignore request logic here
+                    viewModel.ignoreRequest()
                 } label: {
                     Text("Ignore")
                         .padding(10)
@@ -73,7 +77,7 @@ struct RequestRowView: View {
                 }
                 
                 Button {
-                    // Accept request logic here
+                    viewModel.acceptRequest()
                 } label: {
                     Text("Accept")
                         .padding(10)
@@ -96,8 +100,4 @@ struct RequestRowView: View {
         dateFormatter.timeStyle = .short
         return dateFormatter.string(from: date)
     }
-}
-
-#Preview {
-    RequestRowView(user: User.dummyUser, match: Match.dummyMatch)
 }

@@ -11,10 +11,51 @@ import Combine
 
 class CarpoolsViewModel: ObservableObject {
     @Published var matches = [Match]()
+    @Published var requests = [Request]()
     var matchDocumentReference: DocumentReference?
     
     init() {
         fetchMatches()
+        fetchRequests()
+    }
+    
+    func fetchRequests() {
+        guard let currentUserId = AuthViewModel.shared.userSession?.uid else {
+            print("Error: User not authenticated.")
+            return
+        }
+        
+        COLLECTION_USERS.document(currentUserId).collection("requests").addSnapshotListener { snapshot, error in
+            guard let changes = snapshot?.documentChanges else { return }
+            
+            print("Reached hereeee")
+            for change in changes {
+                if let request = try? change.document.data(as: Request.self) {
+                    
+                    switch change.type {
+                    case .added:
+                        self.requests.append(request)
+                        
+                    case .modified:
+                        if let index = self.requests.firstIndex(where: { $0.id == request.id }) {
+                            self.requests[index] = request
+                        } else {
+                            self.requests.append(request)
+                        }
+                        
+                    case .removed:
+                        if let index = self.requests.firstIndex(where: { $0.id == request.id }) {
+                            self.requests.remove(at: index)
+                        }
+                    }
+                } else {
+                    print("failed to decode")
+                }
+            }
+            
+            self.requests.sort { $0.timestamp.dateValue() > $1.timestamp.dateValue() }
+            print(self.requests)
+        }
     }
     
     func fetchMatches() {
@@ -53,8 +94,7 @@ class CarpoolsViewModel: ObservableObject {
                     guard let changes = snapshot?.documentChanges else { return }
                     
                     for change in changes {
-                        if let match = try? change.document.data(as: Match.self),
-                           match.uids.contains(AuthViewModel.shared.userSession!.uid) {
+                        if let match = try? change.document.data(as: Match.self) {
                             
                             switch change.type {
                             case .added:

@@ -9,6 +9,9 @@ import SwiftUI
 
 struct RequestSheetView: View {
     @State private var requestMessage = ""
+    var match: Match
+    var viewModel = NewRequestViewModel()
+    @Environment(\.presentationMode) var mode
     var body: some View {
         VStack {
             Text("Request")
@@ -23,7 +26,8 @@ struct RequestSheetView: View {
             HStack {
                 Spacer()
                 Button {
-                    // Send request here
+                    viewModel.sendRequest(messageText: requestMessage, match: match)
+                    mode.wrappedValue.dismiss()
                 } label: {
                     Text("Send")
                         .font(.caption)
@@ -48,8 +52,4 @@ struct Modifierr: ViewModifier {
             .background(Color(.systemGray6))
             .cornerRadius(10)
     }
-}
-
-#Preview {
-    RequestSheetView()
 }

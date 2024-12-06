@@ -17,7 +17,7 @@ struct Match: Identifiable, Decodable {
     let departing: Bool
     let timestamp: Timestamp
     let lastMessage: String
-    let uid: String
+    let uid: String // uid of person you matched with
     let userFullName: String
     let userProfileImageUrl: String?
     

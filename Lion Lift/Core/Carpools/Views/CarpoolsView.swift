@@ -68,28 +68,44 @@ extension CarpoolsView {
     
     var requests: some View {
         VStack {
-            ScrollView {
-                LazyVStack {
-                    ForEach(0..<5, id: \.self) { _ in
-                        RequestRowView(user: User.dummyUser, match: Match.dummyMatch)
-                            .padding(.vertical)
+            if !viewModel.requests.isEmpty {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(viewModel.requests) { request in
+                            RequestRowView(request: request)
+                                .padding(.vertical)
+                        }
+                        Spacer()
                     }
-                    Spacer()
                 }
+            } else {
+                Spacer()
+                Text("You have no new requests")
+                    .foregroundStyle(.gray)
+                Spacer()
             }
         }
     }
     
     var matches: some View {
         VStack {
-            ForEach(viewModel.matches) { match in
-                if let currentuid = AuthViewModel.shared.userSession?.uid {
-                    if currentuid != match.uid {
-                        MatchRowView(match: match)
+            if let currentuid = AuthViewModel.shared.userSession?.uid {
+                if !viewModel.matches.filter({ $0.uid != currentuid }).isEmpty {
+                    ForEach(viewModel.matches) { match in
+                        
+                        if currentuid != match.uid {
+                            MatchRowView(match: match)
+                        }
+                        
                     }
+                    Spacer()
+                } else {
+                    Spacer()
+                    Text("You have no new matches")
+                        .foregroundStyle(.gray)
+                    Spacer()
                 }
             }
-            Spacer()
         }
     }
 }
