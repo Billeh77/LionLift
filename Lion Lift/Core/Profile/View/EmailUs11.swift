@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EmailUs: View {
+struct EmailUs11: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var message: String = ""
     @State private var isSubmitted: Bool = false
