@@ -18,8 +18,8 @@ class RequestRowViewModel {
     func acceptRequest() {
         guard let currentUid = AuthViewModel.shared.userSession?.uid else { return }
         guard let requestId = request.id else { return }
-        
-        COLLECTION_MATCHES.document(request.matchId).updateData(["uids": FieldValue.arrayUnion([currentUid])]) { error in
+
+        COLLECTION_MATCHES.document(request.matchId).updateData(["uids": FieldValue.arrayUnion([request.uid])]) { error in
             if let error = error {
                 print("Error updating match: \(error.localizedDescription)")
             }

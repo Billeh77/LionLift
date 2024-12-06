@@ -27,6 +27,9 @@ class MatchesViewModel: ObservableObject {
                     
                     switch change.type {
                     case .added:
+                        if match.uids.count == 1 {
+                            continue
+                        }
                         self.matches.append(match)
                         
                     case .modified:

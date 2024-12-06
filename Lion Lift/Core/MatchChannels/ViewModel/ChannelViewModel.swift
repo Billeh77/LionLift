@@ -58,8 +58,8 @@ class ChannelViewModel: ObservableObject {
             .collection("messages")
             .addDocument(data: data)
 
-        COLLECTION_MATCHES.document(match.id!)
-            .updateData(["lastMessage": messageText, "timestamp": Timestamp(date: Date())])  // Add later: currentFullName + ": " +
+//        COLLECTION_MATCHES.document(match.id!)
+//            .updateData(["lastMessage": messageText, "timestamp": Timestamp(date: Date())])  // Add later: currentFullName + ": " +
     }
 
     private func fetchUser(for message: Message, completion: @escaping (User?) -> Void) {
