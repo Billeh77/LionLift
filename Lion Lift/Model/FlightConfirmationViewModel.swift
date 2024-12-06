@@ -26,23 +26,36 @@ class FlightConfirmationViewModel: ObservableObject {
 
         // Step 2: Merge date and time
         let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "MMM dd, yyyy"
-                
-                guard let parsedDate = dateFormatter.date(from: date) else {
-                    error = "Invalid date format."
-                    return
-                }
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set locale to ensure consistent formatting
 
-                let calendar = Calendar.current
-                let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
+        // Try parsing both date formats
+        let dateFormats = ["MMM dd, yyyy", "dd MMM yyyy"]
 
-                guard let combinedDate = calendar.date(bySettingHour: timeComponents.hour ?? 0,
-                                                       minute: timeComponents.minute ?? 0,
-                                                       second: 0,
-                                                       of: parsedDate) else {
-                    error = "Unable to combine date and time."
-                    return
-                }
+        var parsedDate: Date? = nil
+        for format in dateFormats {
+            dateFormatter.dateFormat = format
+            parsedDate = dateFormatter.date(from: date)
+            
+            if parsedDate != nil {
+                break
+            }
+        }
+
+        guard let validDate = parsedDate else {
+            error = "Invalid date format."
+            return
+        }
+
+        let calendar = Calendar.current
+        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
+
+        guard let combinedDate = calendar.date(bySettingHour: timeComponents.hour ?? 0,
+                                               minute: timeComponents.minute ?? 0,
+                                               second: 0,
+                                               of: validDate) else {
+            error = "Unable to combine date and time."
+            return
+        }
 
         // Convert combinedDate to Firebase Timestamp
         let timestamp = Timestamp(date: combinedDate)

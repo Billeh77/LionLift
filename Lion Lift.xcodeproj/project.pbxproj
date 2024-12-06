@@ -40,6 +40,7 @@
 		68EA833F2D02385E009DB5AC /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EA833E2D02385E009DB5AC /* ImageUploader.swift */; };
 		68EA83412D02391A009DB5AC /* ProfilePhotoSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EA83402D02391A009DB5AC /* ProfilePhotoSelectorView.swift */; };
 		68EA83432D023A12009DB5AC /* EditProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EA83422D023A12009DB5AC /* EditProfileSheet.swift */; };
+		AF2226132D0280B300049108 /* NewRequestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2226122D0280B300049108 /* NewRequestViewModel.swift */; };
 		AF5B2FCB2CFEBF3F00711E9C /* CarpoolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FBF2CFEBF3F00711E9C /* CarpoolsView.swift */; };
 		AF5B2FCC2CFEBF3F00711E9C /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FC02CFEBF3F00711E9C /* ChatBubble.swift */; };
 		AF5B2FCD2CFEBF3F00711E9C /* MatchRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FC12CFEBF3F00711E9C /* MatchRowView.swift */; };
@@ -97,6 +98,7 @@
 		68EA833E2D02385E009DB5AC /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageUploader.swift; path = "Lion Lift/Core/Profile/View/ImageUploader.swift"; sourceTree = SOURCE_ROOT; };
 		68EA83402D02391A009DB5AC /* ProfilePhotoSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoSelectorView.swift; sourceTree = "<group>"; };
 		68EA83422D023A12009DB5AC /* EditProfileSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileSheet.swift; sourceTree = "<group>"; };
+		AF2226122D0280B300049108 /* NewRequestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRequestViewModel.swift; sourceTree = "<group>"; };
 		AF5B2FBF2CFEBF3F00711E9C /* CarpoolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarpoolsView.swift; sourceTree = "<group>"; };
 		AF5B2FC02CFEBF3F00711E9C /* ChatBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
 		AF5B2FC12CFEBF3F00711E9C /* MatchRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchRowView.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 			children = (
 				AF5B2FC52CFEBF3F00711E9C /* CarpoolManagerViewModel.swift */,
 				AF5B2FF62CFF2FAC00711E9C /* CarpoolsViewModel.swift */,
+				AF2226122D0280B300049108 /* NewRequestViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -532,6 +535,7 @@
 				AF5B2FCD2CFEBF3F00711E9C /* MatchRowView.swift in Sources */,
 				687758902CE67D20003CA3E9 /* MainTabView.swift in Sources */,
 				AF5B2FE12CFEF0B400711E9C /* CarpoolMatchesView.swift in Sources */,
+				AF2226132D0280B300049108 /* NewRequestViewModel.swift in Sources */,
 				AF5B2FDF2CFEF0A100711E9C /* MatchCell.swift in Sources */,
 				3F9253712CF5152300B0DECF /* ForgotPassword.swift in Sources */,
 				AF5B2FEF2CFEF35100711E9C /* MessageViewModel.swift in Sources */,
