@@ -46,7 +46,7 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func register(withEmail email: String, password: String, phoneNumebr: String, fullname: String, profileImageUrl: UIImage?, nextFlightDateAndTime: String, nextFlightAirport: String, departing: Bool) {
+    func register(withEmail email: String, password: String, phoneNumebr: String, fullname: String, profileImageUrl: UIImage?, nextFlightDateAndTime: String, nextFlightAirport: String, departing: Bool, bio: String = "", schoolAndYear: String = "", venmo: String = "") {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             
             
@@ -68,7 +68,11 @@ class AuthViewModel: ObservableObject {
                         "uid": user.uid,
                         "nextFlightDateAndTime": Timestamp(date: Date()),
                         "nextFlightAirport": nextFlightAirport,
-                        "departing": departing]
+                        "departing": departing,
+                        "bio": bio.isEmpty ? "" : bio,
+                        "schoolAndYear": schoolAndYear.isEmpty ? "" : schoolAndYear,
+                        "venmo": venmo.isEmpty ? "" : venmo
+                        ]
             
             
             

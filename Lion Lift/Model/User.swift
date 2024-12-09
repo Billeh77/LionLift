@@ -19,6 +19,9 @@ struct User: Identifiable, Decodable, Hashable {
     var nextFlightDateAndTime: Timestamp
     var nextFlightAirport: String
     var departing: Bool
+    var bio: String?
+    var schoolAndYear: String?
+    var venmo: String?
     
     var isCurrentUser: Bool { return AuthViewModel.shared.currentUser?.uid == id }
     
@@ -31,7 +34,10 @@ struct User: Identifiable, Decodable, Hashable {
             email: "johndoe@example.com",
             nextFlightDateAndTime: Timestamp(date: Date()),
             nextFlightAirport: "JFK",
-            departing: true
+            departing: true,
+            bio: "Hello, this is my bio",
+            schoolAndYear: "SEAS '25",
+            venmo: "john_venmo"
         )
     }
 }

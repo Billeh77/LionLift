@@ -44,6 +44,24 @@ struct ProfileView: View {
                                         .foregroundColor(.gray)
                                 }
                             }
+                            
+                            Divider()
+                            
+                            if let schoolAndYear = user.schoolAndYear {
+                                Text("School/Year: \(schoolAndYear)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
+                            if let bio = user.bio {
+                                Text("Bio: \(bio)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
+                            if let venmo = user.venmo {
+                                Text("Venmo: \(venmo)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
