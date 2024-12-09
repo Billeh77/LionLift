@@ -39,13 +39,11 @@ struct ProfilePhotoSelectorView: View {
                             .frame(width: 180, height: 180)
                             .clipShape(Circle())
                     } else {
-                        Image("plus_photo")
+                        Image(systemName: "plus.circle.fill")
                             .resizable()
-                            .renderingMode(.template)
                             .foregroundColor(.white)
                             .scaledToFill()
                             .frame(width: 180, height: 180)
-                            .clipShape(Circle())
                         
                     }
                 }
