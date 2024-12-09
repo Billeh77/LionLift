@@ -12,6 +12,7 @@ struct ProfilePhotoSelectorView: View {
     @State private var showImagePicker = false
     @State private var selectedImage: UIImage?
     @State private var profileImage: Image?
+    @State private var isImageUploaded: Bool = false
     @EnvironmentObject var viewModel: AuthViewModel
     
     var body: some View {
@@ -56,6 +57,7 @@ struct ProfilePhotoSelectorView: View {
                     Button {
                         print("DEBUG: Add image button hit...")
                         viewModel.uploadProfileImage(selectedImage)
+                        isImageUploaded = true
                     } label: {
                         Text("Continue")
                             .font(.subheadline)
@@ -69,7 +71,8 @@ struct ProfilePhotoSelectorView: View {
                     }
                 }
                 
-                
+                // NavigationLink to AdditionalProfileInfoView
+                NavigationLink(destination: AdditionalProfileInfoView(), isActive: $isImageUploaded, label: { EmptyView() })
 
                 Spacer()
                 

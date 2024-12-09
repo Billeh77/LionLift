@@ -46,6 +46,29 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    func updateAdditionalProfileInfo(schoolAndYear: String, bio: String? = nil, venmo: String? = nil) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        var updateData: [String: Any] = ["schoolAndYear": schoolAndYear]
+        
+        if let bio = bio {
+            updateData["bio"] = bio
+        }
+        
+        if let venmo = venmo {
+            updateData["venmo"] = venmo
+        }
+        
+        Firestore.firestore().collection("users").document(uid).updateData(updateData) { error in
+            if let error = error {
+                print("DEBUG: Failed to update profile info \(error.localizedDescription)")
+            } else {
+                print("DEBUG: Successfully updated profile info")
+            }
+            self.userSession = self.tempUserSession
+        }
+    }
+    
     func register(withEmail email: String, password: String, phoneNumebr: String, fullname: String, profileImageUrl: UIImage?, nextFlightDateAndTime: String, nextFlightAirport: String, departing: Bool, bio: String = "", schoolAndYear: String = "", venmo: String = "") {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             
@@ -96,7 +119,7 @@ class AuthViewModel: ObservableObject {
             Firestore.firestore().collection("users")
                 .document(uid)
                 .updateData(["profileImageUrl": profileImageUrl]) { _ in
-                    self.userSession = self.tempUserSession
+                    self.tempUserSession = self.tempUserSession
                 }
         }
     }

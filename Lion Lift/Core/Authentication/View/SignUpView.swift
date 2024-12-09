@@ -10,7 +10,7 @@ struct SignUpView: View {
     @State private var navigateToLogin = false
     @State private var showHidePassword = false
 
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var viewModel: AuthViewModel
     
