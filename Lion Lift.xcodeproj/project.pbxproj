@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A1A312A2CFF0FF2002677EF /* ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1A31292CFF0FF2002677EF /* ConfirmationView.swift */; };
+		0AA795BC2D07AFA30086D400 /* OtherUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA795BB2D07AFA30086D400 /* OtherUserProfileView.swift */; };
+		0AA795BE2D07AFD40086D400 /* AdditionalProfileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA795BD2D07AFD40086D400 /* AdditionalProfileInfo.swift */; };
 		0ACD11AB2CF306FB00B328BB /* FlightInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACD11AA2CF306FB00B328BB /* FlightInfo.swift */; };
 		0ACD11AD2CF3070600B328BB /* FlightInfoEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACD11AC2CF3070600B328BB /* FlightInfoEntryView.swift */; };
 		0ACD11AF2CF3070E00B328BB /* ManualFlightEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACD11AE2CF3070E00B328BB /* ManualFlightEntryView.swift */; };
@@ -17,7 +19,7 @@
 		1F80F10E2CE6AC03005FB48E /* CustomerSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F80F10D2CE6AC03005FB48E /* CustomerSupportView.swift */; };
 		3F8BE2042D03A37100113E6B /* ContactMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8BE2032D03A37100113E6B /* ContactMessage.swift */; };
 		3F8BE2062D03A39E00113E6B /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8BE2052D03A39E00113E6B /* Report.swift */; };
-		3F8BE2082D03A4E900113E6B /* FAQContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8BE2072D03A4E900113E6B /* FAQContentView.swift */; };
+		3F8BE2082D03A4E900113E6B /* ChatbotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8BE2072D03A4E900113E6B /* ChatbotView.swift */; };
 		3F8BE20A2D03A4F600113E6B /* ContactUsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8BE2092D03A4F600113E6B /* ContactUsContentView.swift */; };
 		3F8BE20C2D03A80900113E6B /* EmailUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8BE20B2D03A80900113E6B /* EmailUsView.swift */; };
 		3F8BE20E2D03A82100113E6B /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8BE20D2D03A82100113E6B /* ReportView.swift */; };
@@ -77,6 +79,8 @@
 
 /* Begin PBXFileReference section */
 		0A1A31292CFF0FF2002677EF /* ConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationView.swift; sourceTree = "<group>"; };
+		0AA795BB2D07AFA30086D400 /* OtherUserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserProfileView.swift; sourceTree = "<group>"; };
+		0AA795BD2D07AFD40086D400 /* AdditionalProfileInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdditionalProfileInfo.swift; sourceTree = "<group>"; };
 		0ACD11AA2CF306FB00B328BB /* FlightInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightInfo.swift; sourceTree = "<group>"; };
 		0ACD11AC2CF3070600B328BB /* FlightInfoEntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlightInfoEntryView.swift; sourceTree = "<group>"; };
 		0ACD11AE2CF3070E00B328BB /* ManualFlightEntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManualFlightEntryView.swift; sourceTree = "<group>"; };
@@ -86,7 +90,7 @@
 		1F80F10D2CE6AC03005FB48E /* CustomerSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerSupportView.swift; sourceTree = "<group>"; };
 		3F8BE2032D03A37100113E6B /* ContactMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMessage.swift; sourceTree = "<group>"; };
 		3F8BE2052D03A39E00113E6B /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
-		3F8BE2072D03A4E900113E6B /* FAQContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQContentView.swift; sourceTree = "<group>"; };
+		3F8BE2072D03A4E900113E6B /* ChatbotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatbotView.swift; sourceTree = "<group>"; };
 		3F8BE2092D03A4F600113E6B /* ContactUsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsContentView.swift; sourceTree = "<group>"; };
 		3F8BE20B2D03A80900113E6B /* EmailUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailUsView.swift; sourceTree = "<group>"; };
 		3F8BE20D2D03A82100113E6B /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -290,7 +294,7 @@
 				1F80F1092CE6ABD4005FB48E /* ProfileSettingsView.swift */,
 				1F80F10B2CE6ABF1005FB48E /* ChangePasswordView.swift */,
 				1F80F10D2CE6AC03005FB48E /* CustomerSupportView.swift */,
-				3F8BE2072D03A4E900113E6B /* FAQContentView.swift */,
+				3F8BE2072D03A4E900113E6B /* ChatbotView.swift */,
 				3F8BE2092D03A4F600113E6B /* ContactUsContentView.swift */,
 				3F8BE20B2D03A80900113E6B /* EmailUsView.swift */,
 				3F8BE20D2D03A82100113E6B /* ReportView.swift */,
@@ -311,6 +315,7 @@
 		687758832CE67CB8003CA3E9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0AA795BD2D07AFD40086D400 /* AdditionalProfileInfo.swift */,
 				3F92536D2CF5152300B0DECF /* CreateNewPassword.swift */,
 				3F9253682CF5152300B0DECF /* CustomComponents.swift */,
 				3F92536A2CF5152300B0DECF /* ForgotPassword.swift */,
@@ -379,6 +384,7 @@
 		AF5B2FC42CFEBF3F00711E9C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0AA795BB2D07AFA30086D400 /* OtherUserProfileView.swift */,
 				AF5B2FBF2CFEBF3F00711E9C /* CarpoolsView.swift */,
 				AF5B2FC12CFEBF3F00711E9C /* MatchRowView.swift */,
 				AF5B2FC22CFEBF3F00711E9C /* RequestRowView.swift */,
@@ -518,8 +524,10 @@
 				AF5B2FCF2CFEBF3F00711E9C /* RequestSheetView.swift in Sources */,
 				68EA83432D023A12009DB5AC /* EditProfileSheet.swift in Sources */,
 				687758952CE6815A003CA3E9 /* FlightSearchView.swift in Sources */,
+				0AA795BE2D07AFD40086D400 /* AdditionalProfileInfo.swift in Sources */,
 				3F9253742CF5152300B0DECF /* CreateNewPassword.swift in Sources */,
 				1F80F10A2CE6ABD4005FB48E /* ProfileSettingsView.swift in Sources */,
+				0AA795BC2D07AFA30086D400 /* OtherUserProfileView.swift in Sources */,
 				AF5B2FD32CFEBF3F00711E9C /* User.swift in Sources */,
 				3F92536F2CF5152300B0DECF /* CustomComponents.swift in Sources */,
 				3F9253732CF5152300B0DECF /* VerifyCode.swift in Sources */,
@@ -560,7 +568,7 @@
 				1F80F10E2CE6AC03005FB48E /* CustomerSupportView.swift in Sources */,
 				0A1A312A2CFF0FF2002677EF /* ConfirmationView.swift in Sources */,
 				AF5B2FD22CFEBF3F00711E9C /* Match.swift in Sources */,
-				3F8BE2082D03A4E900113E6B /* FAQContentView.swift in Sources */,
+				3F8BE2082D03A4E900113E6B /* ChatbotView.swift in Sources */,
 				68EA832C2CFE3BDE009DB5AC /* AuthViewModel.swift in Sources */,
 				AF5B2FD02CFEBF3F00711E9C /* CarpoolManagerViewModel.swift in Sources */,
 				AF5B2FCD2CFEBF3F00711E9C /* MatchRowView.swift in Sources */,

@@ -23,7 +23,7 @@ struct CustomerSupportView: View {
 
                         // Tab Buttons
                         HStack(spacing: 158) {
-                            TabButton(title: "FAQ", isSelected: selectedTab == .faq) {
+                            TabButton(title: "Chat", isSelected: selectedTab == .faq) {
                                 selectedTab = .faq
                             }
                             TabButton(title: "Contact Us", isSelected: selectedTab == .contact) {
@@ -40,7 +40,7 @@ struct CustomerSupportView: View {
 
                     // Tab Content
                     if selectedTab == .faq {
-                        FAQContentView()
+                        ChatbotView()
                     } else {
                         ContactUsContentView()
                     }
@@ -48,7 +48,7 @@ struct CustomerSupportView: View {
                     Spacer()
                 }
             }
-            .navigationTitle("Customer Support")
+            
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
