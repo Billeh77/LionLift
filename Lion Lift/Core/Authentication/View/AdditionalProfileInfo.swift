@@ -1,10 +1,3 @@
-//
-//  AdditionalProfileInfo.swift
-//  Lion Lift
-//
-//  Created by Chase Preston on 12/9/24.
-//
-
 import SwiftUI
 
 struct AdditionalProfileInfoView: View {
@@ -14,85 +7,141 @@ struct AdditionalProfileInfoView: View {
     @EnvironmentObject var viewModel: AuthViewModel
     @Environment(\.dismiss) var dismiss
     
-    
     var body: some View {
-        ZStack {
-            Color(red: 0.61, green: 0.80, blue: 0.92)
+        NavigationView {
+            ZStack {
+                // gradient background
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color(red: 0.61, green: 0.80, blue: 0.92),
+                        Color(red: 0.40, green: 0.70, blue: 0.85)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
                 .edgesIgnoringSafeArea(.all)
-            
-            VStack(spacing: 20) {
-                Spacer()
                 
-                Text("Complete Your Profile")
-                    .font(.title2)
-                    .bold()
-                    .foregroundStyle(.white)
-                
-                VStack(spacing: 15) {
-                    TextField("School and Year (e.g., Columbia College 2025)", text: $schoolAndYear)
-                        .modifier(TextFieldModifier())
+                VStack(spacing: 30) {
+                    // main title
+                    VStack(spacing: 8) {
+                        Text("Complete Your Profile")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white)
+                        
+                        Text("Help us get to know you better")
+                            .font(.system(size: 16))
+                            .foregroundColor(.white.opacity(0.8))
+                    }
+                    .padding(.top, 20)
                     
-                    TextEditor(text: $bio)
-                        .modifier(TextFieldModifier())
-                        .frame(height: 100)
-                        .cornerRadius(10)
-                        .placeholder(when: bio.isEmpty) {
-                            Text("Tell us a bit about yourself (optional)")
-                                .foregroundColor(.gray)
-                                .padding(.horizontal, 4)
+                    // fields
+                    VStack(spacing: 20) {
+                        CustomTextField(
+                            icon: "graduationcap",
+                            placeholder: "School and Year (e.g. CC '25)",
+                            text: $schoolAndYear,
+                            placeholderColor: .gray.opacity(0.5)
+                        )
+                        
+                        VStack(alignment: .leading) {
+                            Text("My Bio")
+                                    .font(.caption)
+                                    .foregroundColor(.white.opacity(0.7))
+                                    .padding(.horizontal, 20)
+                                
+                                ZStack(alignment: .topLeading) {
+                                    if bio.isEmpty {
+                                        Text("Tell us a bit about yourself")
+                                            .foregroundColor(.gray.opacity(0.5))
+                                            .font(.subheadline)
+                                            .padding(.horizontal, 30)
+                                            .padding(.vertical, 14)
+                                    }
+                                    
+                                    TextEditor(text: $bio)
+                                        .frame(height: 120)
+                                        .background(Color.white)
+                                        .foregroundColor(.black)
+                                        .cornerRadius(12)
+                                        .padding(.horizontal)
+                                }
                         }
+                        
+                        CustomTextField(
+                            icon: "dollarsign.circle",
+                            placeholder: "Venmo Username (optional)",
+                            text: $venmo,
+                            placeholderColor: .gray.opacity(0.5)
+                        )
+                    }
+                    .padding(.horizontal)
                     
-                    TextField("Venmo Username (optional)", text: $venmo)
-                        .modifier(TextFieldModifier())
+                    // Continue Button
+                    Button(action: updateProfileInfo) {
+                        Text("Continue")
+                            .font(.headline)
+                            .frame(height: 50)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                            .foregroundColor(.black)
+                            .cornerRadius(12)
+                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 20)
+                    
+                    Spacer()
                 }
-                .padding(.horizontal)
-                
-                Button {
-                    updateProfileInfo()
-                } label: {
-                    Text("Continue")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.black)
-                        .frame(width: 360, height: 44)
-                        .background(.white)
-                        .cornerRadius(8)
-                        .padding(.vertical)
-                        .padding(.top)
-                }
-                
-                Spacer()
-                Spacer()
             }
+            .navigationBarHidden(true)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     private func updateProfileInfo() {
-        // Update the user's profile with additional information
         viewModel.updateAdditionalProfileInfo(
-            schoolAndYear: schoolAndYear,
+            schoolAndYear: schoolAndYear.isEmpty ? nil : schoolAndYear,
             bio: bio.isEmpty ? nil : bio,
             venmo: venmo.isEmpty ? nil : venmo
         )
+        dismiss()
     }
 }
 
-// Custom modifier to help with TextEditor placeholder
-extension View {
-    func placeholder<Content: View>(
-        when shouldShow: Bool,
-        alignment: Alignment = .leading,
-        @ViewBuilder then: () -> Content
-    ) -> some View {
-        ZStack(alignment: alignment) {
-            if shouldShow {
-                then()
+// Custom TextField View
+struct CustomTextField: View {
+    let icon: String
+    let placeholder: String
+    @Binding var text: String
+    var placeholderColor: Color = .gray.opacity(0.5)
+    
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+                .foregroundColor(.black.opacity(0.6))
+                .frame(width: 30)
+            
+            ZStack(alignment: .leading) {
+                if text.isEmpty {
+                    Text(placeholder)
+                        .foregroundColor(placeholderColor)
+                        .font(.subheadline)
+                }
+                
+                TextField("", text: $text)
+                    .foregroundColor(.black)
+                    .font(.subheadline)
+                    .accentColor(.black)
             }
-            self
         }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(12)
+        .padding(.horizontal)
     }
 }
 
 #Preview {
     AdditionalProfileInfoView()
+        .environmentObject(AuthViewModel())
 }

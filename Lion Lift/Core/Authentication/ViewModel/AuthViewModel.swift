@@ -46,11 +46,11 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func updateAdditionalProfileInfo(schoolAndYear: String, bio: String? = nil, venmo: String? = nil) {
+    func updateAdditionalProfileInfo(schoolAndYear: String? = nil, bio: String? = nil, venmo: String? = nil) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        var updateData: [String: Any] = ["schoolAndYear": schoolAndYear]
-        
+        var updateData: [String: Any] = ["schoolAndYear": schoolAndYear as Any]
+
         if let bio = bio {
             updateData["bio"] = bio
         }
