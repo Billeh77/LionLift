@@ -72,11 +72,13 @@ struct EditProfileSheet: View {
                             ZStack {
                                 Circle()
                                     .frame(width: 120, height: 120)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(.white)
                                 
-                                Image(systemName: "person")
+                                Image(systemName: "plus.circle.fill")
                                     .resizable()
-                                    .frame(width: 80, height: 80)
+                                    .foregroundColor(Color(red: 0.63, green: 0.82, blue: 0.96))
+                                    .scaledToFill()
+                                    .frame(width: 180, height: 180)
                             }
                         }
                         
