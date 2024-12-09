@@ -12,10 +12,13 @@ import Firebase
 struct RequestRowView: View {
     let request: Request
     var viewModel: RequestRowViewModel
+    @State private var isProfileViewPresented = false
+    
     init(request: Request) {
         self.request = request
         self.viewModel = RequestRowViewModel(request: request)
     }
+    
     var body: some View {
         VStack {
             
@@ -37,7 +40,10 @@ struct RequestRowView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(width: 65, height: 65)
-                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                        .clipShape(Circle())
+                        .onTapGesture {
+                            isProfileViewPresented = true
+                        }
                 } else {
                     ZStack {
                         Circle()
@@ -48,9 +54,12 @@ struct RequestRowView: View {
                             .frame(width: 22, height: 22)
                             .foregroundColor(.white)
                     }
+                    .onTapGesture {
+                        isProfileViewPresented = true
+                    }
                 }
                 
-                VStack (alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(request.fullname)
                         .font(.footnote).bold()
                         .foregroundColor(.black)
@@ -72,8 +81,7 @@ struct RequestRowView: View {
                         .foregroundStyle(.black)
                         .font(.caption)
                         .cornerRadius(5)
-                        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                    
+                        .shadow(radius: 10)
                 }
                 
                 Button {
@@ -85,11 +93,13 @@ struct RequestRowView: View {
                         .foregroundStyle(.white)
                         .font(.caption)
                         .cornerRadius(5)
-                        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                        .shadow(radius: 10)
                 }
-                
             }
             .padding(.horizontal)
+        }
+        .sheet(isPresented: $isProfileViewPresented) {
+            OtherUserProfileView(request: request)
         }
     }
     

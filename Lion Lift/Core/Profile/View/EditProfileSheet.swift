@@ -20,6 +20,9 @@ struct EditProfileSheet: View {
     @State private var confirmPassword = ""
     @State private var errorMessage: String?
     @State private var emailErrorMessage: String?
+    @State private var bio: String = ""
+    @State private var schoolAndYear: String = ""
+    @State private var venmo: String = ""
     
     @State private var showAlert = false
     
@@ -69,11 +72,13 @@ struct EditProfileSheet: View {
                             ZStack {
                                 Circle()
                                     .frame(width: 120, height: 120)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(.white)
                                 
-                                Image(systemName: "person")
+                                Image(systemName: "plus.circle.fill")
                                     .resizable()
-                                    .frame(width: 80, height: 80)
+                                    .foregroundColor(Color(red: 0.63, green: 0.82, blue: 0.96))
+                                    .scaledToFill()
+                                    .frame(width: 180, height: 180)
                             }
                         }
                         
@@ -105,11 +110,24 @@ struct EditProfileSheet: View {
                             .onAppear() {
                                 email = user.email
                             }
-                        
                         TextField("Phone Number", text: $phoneNumber)
                             .keyboardType(.emailAddress)
                             .onAppear() {
                                 phoneNumber = user.phoneNumber
+                            }
+                        TextField("Bio", text: $bio)
+                            .onAppear() {
+                                bio = user.bio ?? ""
+                            }
+                            
+                        TextField("School and Year", text: $schoolAndYear)
+                            .onAppear() {
+                                schoolAndYear = user.schoolAndYear ?? ""
+                            }
+                            
+                        TextField("Venmo", text: $venmo)
+                            .onAppear() {
+                                venmo = user.venmo ?? ""
                             }
                     }
                 }
@@ -148,14 +166,14 @@ struct EditProfileSheet: View {
                     
                     if user.email == email {
                         
-                        viewModel.updateUserProfile(email: email, fullname: fullname, phoneNumber: phoneNumber, image: image) {
+                        viewModel.updateUserProfile(email: email, fullname: fullname, phoneNumber: phoneNumber, image: image, bio: bio, schoolAndYear: schoolAndYear, venmo: venmo) {
                             showAlert = true
                             print("Save button hit...")
                         }
                         
                     } else {
                         if validateEmail(email) {
-                            viewModel.updateUserProfile(email: email, fullname: fullname, phoneNumber: phoneNumber, image: image) {
+                            viewModel.updateUserProfile(email: email, fullname: fullname, phoneNumber: phoneNumber, image: image, bio: bio, schoolAndYear: schoolAndYear, venmo: venmo) {
                                 showAlert = true
                                 print("Save Button hit...")
                             }
@@ -165,8 +183,10 @@ struct EditProfileSheet: View {
                     }
                     
                     print("User email is \(user.email)")
-                    
                     print("Edit profile email is \(email)")
+                    print("new bio: \(bio)")
+                    print("new schoolandyear: \(schoolAndYear)")
+                    print("new venmo: \(venmo)")
                     
                 } label: {
                     Text("Save")
@@ -222,16 +242,18 @@ struct EditProfileSheet: View {
 }
 
 extension AuthViewModel {
-    func updateUserProfile(email: String, fullname: String, phoneNumber: String, image: UIImage?, completion: @escaping () -> Void) {
-        if (currentUser?.fullname == fullname) && (currentUser?.email == email) && (currentUser?.phoneNumber == phoneNumber) && (image == nil) {
+    func updateUserProfile(email: String, fullname: String, phoneNumber: String, image: UIImage?, bio: String?, schoolAndYear: String?, venmo: String?, completion: @escaping () -> Void) {
+        if (currentUser?.fullname == fullname) && (currentUser?.email == email) && (currentUser?.phoneNumber == phoneNumber) && (image == nil && (currentUser?.bio == bio) && (currentUser?.schoolAndYear == schoolAndYear) && (currentUser?.venmo == venmo)) {
             return
         } else {
             guard let uid = userSession?.uid else { return }
             
             var data = ["email": email,
                         "fullname": fullname,
-                        "phoneNumber": phoneNumber]
-            
+                        "phoneNumber": phoneNumber,
+                        "bio": bio,
+                        "schoolAndYear": schoolAndYear,
+                        "venmo": venmo]
             
             if let image = image {
                 ImageUploader.uploadImage(image: image) { profileImageUrl in

@@ -46,7 +46,30 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func register(withEmail email: String, password: String, phoneNumebr: String, fullname: String, profileImageUrl: UIImage?, nextFlightDateAndTime: String, nextFlightAirport: String, departing: Bool) {
+    func updateAdditionalProfileInfo(schoolAndYear: String? = nil, bio: String? = nil, venmo: String? = nil) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        var updateData: [String: Any] = ["schoolAndYear": schoolAndYear as Any]
+
+        if let bio = bio {
+            updateData["bio"] = bio
+        }
+        
+        if let venmo = venmo {
+            updateData["venmo"] = venmo
+        }
+        
+        Firestore.firestore().collection("users").document(uid).updateData(updateData) { error in
+            if let error = error {
+                print("DEBUG: Failed to update profile info \(error.localizedDescription)")
+            } else {
+                print("DEBUG: Successfully updated profile info")
+            }
+            self.userSession = self.tempUserSession
+        }
+    }
+    
+    func register(withEmail email: String, password: String, phoneNumebr: String, fullname: String, profileImageUrl: UIImage?, nextFlightDateAndTime: String, nextFlightAirport: String, departing: Bool, bio: String = "", schoolAndYear: String = "", venmo: String = "") {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             
             
@@ -68,7 +91,11 @@ class AuthViewModel: ObservableObject {
                         "uid": user.uid,
                         "nextFlightDateAndTime": Timestamp(date: Date()),
                         "nextFlightAirport": nextFlightAirport,
-                        "departing": departing]
+                        "departing": departing,
+                        "bio": bio.isEmpty ? "" : bio,
+                        "schoolAndYear": schoolAndYear.isEmpty ? "" : schoolAndYear,
+                        "venmo": venmo.isEmpty ? "" : venmo
+                        ]
             
             
             
@@ -92,7 +119,7 @@ class AuthViewModel: ObservableObject {
             Firestore.firestore().collection("users")
                 .document(uid)
                 .updateData(["profileImageUrl": profileImageUrl]) { _ in
-                    self.userSession = self.tempUserSession
+                    self.tempUserSession = self.tempUserSession
                 }
         }
     }
