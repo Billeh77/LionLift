@@ -12,6 +12,8 @@ import Firebase
 struct MatchRowView: View {
     let match: Match
     @State private var showRequestSheet = false
+    @State private var isProfileViewPresented = false
+    
     var body: some View {
         HStack {
             if let profileImageUrl = match.userProfileImageUrl {
@@ -19,7 +21,10 @@ struct MatchRowView: View {
                     .resizable()
                     .scaledToFill()
                     .frame(width: 65, height: 65)
-                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                    .clipShape(Circle())
+                    .onTapGesture {
+                        isProfileViewPresented = true
+                    }
             } else {
                 ZStack {
                     Circle()
@@ -29,6 +34,9 @@ struct MatchRowView: View {
                         .resizable()
                         .frame(width: 22, height: 22)
                         .foregroundColor(.white)
+                }
+                .onTapGesture {
+                    isProfileViewPresented = true
                 }
             }
                 
@@ -44,7 +52,6 @@ struct MatchRowView: View {
                     .foregroundColor(.gray)
             }
             Spacer()
-            
             
             Button {
                 showRequestSheet.toggle()
@@ -62,9 +69,11 @@ struct MatchRowView: View {
                     .ignoresSafeArea()
                     .presentationDetents([.fraction(0.5), .fraction(0.6)])
             }
-            
         }
         .padding(.horizontal)
+        .sheet(isPresented: $isProfileViewPresented) {
+            OtherUserProfileView(match: match)
+        }
     }
     
     private func formatTimestamp(_ timestamp: Timestamp) -> String {
