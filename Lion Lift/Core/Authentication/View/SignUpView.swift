@@ -24,10 +24,14 @@ struct SignUpView: View {
 
                 VStack(spacing: 20) {
                     
-                    NavigationLink(destination: ProfilePhotoSelectorView(),
-                                   isActive: $viewModel.didAuthenticateUser,
-                                   label: { })
-                    
+                    // Modified NavigationLink to use value-based navigation
+                    NavigationLink(value: viewModel.didAuthenticateUser) {
+                        EmptyView() // Placeholder for the label if you only want to navigate based on value
+                    }
+                    .navigationDestination(for: Bool.self) { _ in
+                        ProfilePhotoSelectorView() // Navigate to this view when didAuthenticateUser is true
+                    }
+
                     Spacer()
                     
                     Text("Create New Account")

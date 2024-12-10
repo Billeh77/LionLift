@@ -8,44 +8,43 @@ struct LoginView: View {
     @State private var isLoading: Bool = false
 
     @State private var navigateToSignup = false
-    @State private var navigateToForgotPassword = false
+    @State private var navigateToForgotPassword = false  // added state
     @State private var navigateToMainTab = false
     
     @EnvironmentObject var viewModel: AuthViewModel
-    
 
     var body: some View {
-        
         NavigationStack {
             ZStack {
                 Color(red: 0.61, green: 0.80, blue: 0.92)
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
-                    
                     Spacer()
-                    
+
                     Text("Login")
                         .font(.title2)
                         .bold()
                         .foregroundStyle(.white)
-                    
+
                     if !viewModel.errorMessage.isEmpty {
                         Text("Incorrect username or password, please try again")
                             .font(.caption)
                             .foregroundColor(.red)
                     }
-                    
 
                     TextField("Email", text: $email)
+                        .onChange(of: email) { oldValue, newValue in
+                            email = newValue.lowercased() // Automatically convert to lowercase
+                        }
                         .autocapitalization(.none)
                         .modifier(TextFieldModifier())
-                    
+
                     SecureField("Password", text: $password)
                         .modifier(TextFieldModifier())
-                    
+
                     Button {
-                        
+                        navigateToForgotPassword = true // change state when button clicked
                     } label: {
                         Text("Forgot password?")
                             .font(.footnote)
@@ -54,6 +53,13 @@ struct LoginView: View {
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
 
+                    // Update NavigationLink to use new iOS 16 syntax
+                    NavigationLink(value: navigateToForgotPassword) {
+                        EmptyView()
+                    }
+                    .navigationDestination(for: Bool.self) { _ in
+                        ForgotPasswordView() // Navigate to ForgotPasswordView
+                    }
 
                     if isLoading {
                         ProgressView()
@@ -74,7 +80,7 @@ struct LoginView: View {
                     }
 
                     Spacer()
-                    
+
                     Spacer()
 
                     NavigationLink {
@@ -83,7 +89,7 @@ struct LoginView: View {
                         Text("Don't have an account? ")
                             .font(.caption)
                             .foregroundStyle(.black) +
-                        
+
                         Text("Sign Up")
                             .foregroundStyle(.white)
                             .font(.caption)
@@ -96,5 +102,14 @@ struct LoginView: View {
             }
         }
         .tint(.black)
+    }
+}
+
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+            .previewLayout(.sizeThatFits)
+            .preferredColorScheme(.dark)
+            .environmentObject(AuthViewModel())
     }
 }

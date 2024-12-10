@@ -67,9 +67,10 @@ struct VerifyCodeView: View {
         }
 
         let db = Firestore.firestore()
-        db.collection("password_reset_codes").document(email).getDocument { snapshot, error in
+        db.collection("password_reset_codes").document(email.lowercased()).getDocument { snapshot, error in
             if let error = error {
                 alertMessage = "Error fetching code: \(error.localizedDescription)"
+                showAlert = true
             } else if let data = snapshot?.data(),
                       let code = data["code"] as? String,
                       let expiresAt = data["expiresAt"] as? Timestamp,
@@ -77,20 +78,14 @@ struct VerifyCodeView: View {
                 if code == enteredCode {
                     alertMessage = "Code verified successfully!"
                     isCodeValid = true
+                    // Proceed to password reset screen
                 } else {
                     alertMessage = "Invalid code. Please try again."
                 }
             } else {
                 alertMessage = "Code expired or does not exist."
+                showAlert = true
             }
-            showAlert = true
         }
-    }
-}
-
-struct VerifyCodeView_Previews: PreviewProvider {
-    static var previews: some View {
-        VerifyCodeView(email: "test@example.com", verificationCode: "123456")
-            .previewDevice("iPhone 15 Pro")
     }
 }
