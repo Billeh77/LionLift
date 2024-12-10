@@ -14,8 +14,6 @@ struct SignUpView: View {
     
     @EnvironmentObject var viewModel: AuthViewModel
     
-    
-    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -24,21 +22,16 @@ struct SignUpView: View {
 
                 VStack(spacing: 20) {
                     
-                    // Modified NavigationLink to use value-based navigation
-                    NavigationLink(value: viewModel.didAuthenticateUser) {
-                        EmptyView() // Placeholder for the label if you only want to navigate based on value
-                    }
-                    .navigationDestination(for: Bool.self) { _ in
-                        ProfilePhotoSelectorView() // Navigate to this view when didAuthenticateUser is true
-                    }
-
+                    NavigationLink(destination: ProfilePhotoSelectorView(),
+                                   isActive: $viewModel.didAuthenticateUser,
+                                   label: { })
+                    
                     Spacer()
                     
                     Text("Create New Account")
                         .font(.title2)
                         .bold()
                         .foregroundStyle(.white)
-                    
                     
                     Text(viewModel.errorMessage)
                         .font(.caption)
@@ -127,3 +120,10 @@ struct SignUpView: View {
     }
 }
 
+// Preview for the SignUpView
+struct SignUpView_Previews: PreviewProvider {
+    static var previews: some View {
+        SignUpView()
+            .environmentObject(AuthViewModel()) // Mock AuthViewModel
+    }
+}
