@@ -18,7 +18,7 @@ struct EmailUsView: View {
                 ZStack {
                     HStack {
                         Spacer()
-                        Text("Contact Us")
+                        Text("Email Us")
                             .font(Font.custom("Montserrat", size: 24).weight(.semibold))
                             .foregroundColor(Color(red: 0, green: 0.22, blue: 0.40))
                         Spacer()
@@ -34,7 +34,7 @@ struct EmailUsView: View {
 
                 // Message Input Form
                 VStack(alignment: .leading, spacing: 20) {
-                    Text("If you have any issues or feedback, please fill out the form below.")
+                    Text("  We'd love to hear from you! If you have any issues, suggestions, or feedback, please fill out the form below and we'll get back to you as soon as possible.")
                         .font(.callout)
                         .foregroundColor(.secondary)
 
@@ -55,6 +55,7 @@ struct EmailUsView: View {
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(Color(red: 0.61, green: 0.80, blue: 0.92))
+                        
                             .cornerRadius(10)
                     }
                 }

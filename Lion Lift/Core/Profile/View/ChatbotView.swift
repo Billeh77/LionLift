@@ -49,7 +49,7 @@ struct ChatbotView: View {
                     Image(systemName: "paperplane.fill")
                         .foregroundColor(.white)
                         .padding()
-                        .background(Color.blue)
+                        .background(Color(red: 0, green: 0.22, blue: 0.40))
                         .clipShape(Circle())
                 }
                 .disabled(userInput.isEmpty || isLoading)

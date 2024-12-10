@@ -1,71 +1,44 @@
 import SwiftUI
+import FirebaseFirestore
 
 struct VerifyCodeView: View {
-    @State private var verificationCode: String = "123456" // Simulated code
+    let email: String
+    let verificationCode: String
     @State private var enteredCode: String = ""
-    @State private var showMessage: String? = nil
+    @State private var alertMessage: String = ""
+    @State private var showAlert: Bool = false
+    @State private var isCodeValid: Bool = false
 
     var body: some View {
         ZStack {
-            // Background Color
             Color(red: 0.61, green: 0.80, blue: 0.92)
                 .edgesIgnoringSafeArea(.all)
 
             VStack(spacing: 20) {
-                // Header Text
                 Text("Verify Code")
                     .font(.custom("Poppins", size: 24).weight(.semibold))
                     .foregroundColor(.white)
                     .padding(.top, 50)
 
-                // Code Verification Section
-                Text("Enter the 6-digit code we sent to your email")
+                Text("Enter the 6-digit code sent to \(email)")
                     .font(.custom("Poppins", size: 16))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
 
-                HStack(spacing: 10) {
-                    ForEach(0..<6) { index in
-                        TextField("", text: Binding(
-                            get: {
-                                guard enteredCode.count > index else { return "" }
-                                return String(enteredCode[enteredCode.index(enteredCode.startIndex, offsetBy: index)])
-                            },
-                            set: { newValue in
-                                if newValue.count <= 1 {
-                                    var code = enteredCode
-                                    let stringIndex = code.index(code.startIndex, offsetBy: index)
-                                    if index < code.count {
-                                        code.replaceSubrange(stringIndex...stringIndex, with: newValue)
-                                    } else {
-                                        code.append(newValue)
-                                    }
-                                    enteredCode = String(code.prefix(6))
-                                }
-                            }
-                        ))
-                        .frame(width: 40, height: 50)
-                        .background(Color.white)
-                        .cornerRadius(5)
-                        .font(.custom("Roboto", size: 28).weight(.bold))
-                        .multilineTextAlignment(.center)
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
+                TextField("Enter Code", text: $enteredCode)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(5)
+                    .foregroundColor(.black)
+                    .font(.custom("Poppins", size: 16))
+                    .multilineTextAlignment(.center)
+                    .keyboardType(.numberPad)
+                    .frame(maxWidth: .infinity, minHeight: 50)
 
-                if let message = showMessage {
-                    Text(message)
-                        .font(.custom("Poppins", size: 14))
-                        .foregroundColor(message == "Code verified successfully!" ? .green : .red)
-                        .padding(.top, 10)
-                }
-
-                // Verify Button
                 Button(action: {
-                    handleVerifyCode()
+                    verifyCode()
                 }) {
                     Text("Verify")
                         .font(.custom("Poppins", size: 16).weight(.bold))
@@ -76,26 +49,48 @@ struct VerifyCodeView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 20)
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("Code Verification"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                }
 
                 Spacer()
             }
-            .frame(maxWidth: .infinity, alignment: .top)
-            .padding(.top, 20)
+            .padding(.horizontal, 20)
         }
     }
 
-    func handleVerifyCode() {
-        if enteredCode == verificationCode {
-            showMessage = "Code verified successfully!"
-        } else {
-            showMessage = "Invalid code. Please try again."
+    private func verifyCode() {
+        guard !enteredCode.isEmpty else {
+            alertMessage = "Please enter the code."
+            showAlert = true
+            return
+        }
+
+        let db = Firestore.firestore()
+        db.collection("password_reset_codes").document(email).getDocument { snapshot, error in
+            if let error = error {
+                alertMessage = "Error fetching code: \(error.localizedDescription)"
+            } else if let data = snapshot?.data(),
+                      let code = data["code"] as? String,
+                      let expiresAt = data["expiresAt"] as? Timestamp,
+                      expiresAt.dateValue() > Date() {
+                if code == enteredCode {
+                    alertMessage = "Code verified successfully!"
+                    isCodeValid = true
+                } else {
+                    alertMessage = "Invalid code. Please try again."
+                }
+            } else {
+                alertMessage = "Code expired or does not exist."
+            }
+            showAlert = true
         }
     }
 }
 
 struct VerifyCodeView_Previews: PreviewProvider {
     static var previews: some View {
-        VerifyCodeView()
+        VerifyCodeView(email: "test@example.com", verificationCode: "123456")
             .previewDevice("iPhone 15 Pro")
     }
 }
