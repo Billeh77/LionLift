@@ -9,12 +9,10 @@ struct SignUpView: View {
     @State private var errorMessage: String? = nil
     @State private var navigateToLogin = false
     @State private var showHidePassword = false
+    @State private var navigationTag: String?
 
     @Environment(\.dismiss) var dismiss
-    
     @EnvironmentObject var viewModel: AuthViewModel
-    
-    
     
     var body: some View {
         NavigationStack {
@@ -23,18 +21,13 @@ struct SignUpView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
-                    
-                    NavigationLink(destination: ProfilePhotoSelectorView(),
-                                   isActive: $viewModel.didAuthenticateUser,
-                                   label: { })
-                    
+                    // Replace deprecated NavigationLink
                     Spacer()
-                    
+
                     Text("Create New Account")
                         .font(.title2)
                         .bold()
                         .foregroundStyle(.white)
-                    
                     
                     Text(viewModel.errorMessage)
                         .font(.caption)
@@ -80,6 +73,7 @@ struct SignUpView: View {
                                                nextFlightDateAndTime: "",
                                                nextFlightAirport: "",
                                                departing: false)
+                            navigationTag = "ProfilePhotoSelector"
                         } else {
                             viewModel.errorMessage = "Please use a valid @columbia.edu email address."
                         }
@@ -96,7 +90,6 @@ struct SignUpView: View {
                     }
 
                     Spacer()
-                    
                     Spacer()
 
                     Button {
@@ -113,6 +106,11 @@ struct SignUpView: View {
                     }
                 }
             }
+            .navigationDestination(for: String.self) { tag in
+                if tag == "ProfilePhotoSelector" {
+                    ProfilePhotoSelectorView()
+                }
+            }
         }
     }
     
@@ -122,4 +120,3 @@ struct SignUpView: View {
         return emailPredicate.evaluate(with: email)
     }
 }
-
