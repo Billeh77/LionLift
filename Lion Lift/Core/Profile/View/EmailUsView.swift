@@ -34,7 +34,7 @@ struct EmailUsView: View {
 
                 // Message Input Form
                 VStack(alignment: .leading, spacing: 20) {
-                    Text("  We'd love to hear from you! If you have any issues, suggestions, or feedback, please fill out the form below and we'll get back to you as soon as possible.")
+                    Text("We'd love to hear from you! If you have any issues, suggestions, or feedback, please fill out the form below and we'll get back to you as soon as possible.")
                         .font(.callout)
                         .foregroundColor(.secondary)
 

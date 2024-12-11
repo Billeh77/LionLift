@@ -34,7 +34,7 @@ struct ReportView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     // Report the User title
-                    Text("Report the User")
+                    Text("Report a User")
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(Color(red: 0/255, green: 56/255, blue: 101/255))

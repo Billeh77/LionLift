@@ -5,7 +5,7 @@ struct ChatbotView: View {
     @State private var userInput: String = ""
     @State private var isLoading: Bool = false
 
-    private let openAIKey = "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" // Replace with your actual OpenAI API key
+    private let openAIKey = "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"
     private let openAIURL = "https://api.openai.com/v1/chat/completions"
 
     var body: some View {

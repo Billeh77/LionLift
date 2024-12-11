@@ -38,7 +38,7 @@ struct CustomerSupportView: View {
                             }
                             // Report the User Button
                             NavigationLink(value: ContactDestination.reportUser) {
-                                ContactButton(title: "Report the User", iconName: "exclamationmark.triangle.fill")
+                                ContactButton(title: "Report a User", iconName: "exclamationmark.triangle.fill")
                             }
                             
 
