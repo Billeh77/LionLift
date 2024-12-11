@@ -94,7 +94,6 @@ struct LoginView: View {
                 viewModel.errorMessage = ""
             }
         }
-        .tint(.white)
     }
 }
 
