@@ -69,12 +69,9 @@ struct ProfilePhotoSelectorView: View {
                     }
                 }
                 
-                NavigationLink(value: isImageUploaded) {
-                            EmptyView() // Placeholder for the label if you only want to navigate based on value
-                        }
-                        .navigationDestination(for: Bool.self) { _ in
-                            AdditionalProfileInfoView() // Navigate to this view when isImageUploaded is true
-                        }
+                // NavigationLink to AdditionalProfileInfoView
+                NavigationLink(destination: AdditionalProfileInfoView(), isActive: $isImageUploaded, label: { EmptyView() })
+
                 Spacer()
                 
                 Spacer()

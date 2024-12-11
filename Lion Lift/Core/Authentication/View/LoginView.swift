@@ -12,8 +12,10 @@ struct LoginView: View {
     @State private var navigateToMainTab = false
     
     @EnvironmentObject var viewModel: AuthViewModel
+    
 
     var body: some View {
+        
         NavigationStack {
             ZStack {
                 Color(red: 0.61, green: 0.80, blue: 0.92)
@@ -21,7 +23,8 @@ struct LoginView: View {
 
                 VStack(spacing: 20) {
                     
-                    // 상단에 간격을 주는 Spacer() 제거
+                    Spacer()
+                    
                     Text("Login")
                         .font(.title2)
                         .bold()
@@ -33,6 +36,7 @@ struct LoginView: View {
                             .foregroundColor(.red)
                     }
                     
+
                     TextField("Email", text: $email)
                         .autocapitalization(.none)
                         .modifier(TextFieldModifier())
@@ -50,6 +54,7 @@ struct LoginView: View {
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
 
+
                     if isLoading {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -60,48 +65,37 @@ struct LoginView: View {
                             Text("Log In")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.white)
+                                .foregroundColor(.black)
                                 .frame(width: 360, height: 44)
-                                .background(Color(red: 0/255, green: 56/255, blue: 101/255)) // #003865
+                                .background(.white)
                                 .cornerRadius(8)
                                 .padding(.vertical)
                         }
                     }
 
-                   
-                    HStack {
-                        Text("Don't have an account? ")
-                            .font(.caption)
-                            .foregroundColor(.black)
-                        
-                        NavigationLink {
-                            SignUpView()
-                        } label: {
-                            Text("Sign Up")
-                                .font(.caption)
-                                .bold()
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .padding(.bottom, 16)
+                    Spacer()
                     
                     Spacer()
+
+                    NavigationLink {
+                        SignUpView()
+                    } label: {
+                        Text("Don't have an account? ")
+                            .font(.caption)
+                            .foregroundStyle(.black) +
+                        
+                        Text("Sign Up")
+                            .foregroundStyle(.white)
+                            .font(.caption)
+                            .bold()
+                    }
                 }
-                .padding(.top, 32)
             }
             .onAppear() {
                 viewModel.errorMessage = ""
             }
         }
-        .tint(.white)
+        .tint(.black)
     }
 }
 
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-            .previewLayout(.sizeThatFits)
-            .preferredColorScheme(.dark)
-            .environmentObject(AuthViewModel())
-    }
-}
