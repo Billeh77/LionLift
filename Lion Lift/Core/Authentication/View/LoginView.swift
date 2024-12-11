@@ -12,19 +12,14 @@ struct LoginView: View {
     @State private var navigateToMainTab = false
     
     @EnvironmentObject var viewModel: AuthViewModel
-    
 
     var body: some View {
-        
         NavigationStack {
             ZStack {
                 Color(red: 0.61, green: 0.80, blue: 0.92)
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
-                    
-                    Spacer()
-                    
                     Text("Login")
                         .font(.title2)
                         .bold()
@@ -36,7 +31,6 @@ struct LoginView: View {
                             .foregroundColor(.red)
                     }
                     
-
                     TextField("Email", text: $email)
                         .autocapitalization(.none)
                         .modifier(TextFieldModifier())
@@ -45,7 +39,7 @@ struct LoginView: View {
                         .modifier(TextFieldModifier())
                     
                     Button {
-                        
+                        navigateToForgotPassword = true // Forgot password 버튼을 눌렀을 때 상태를 변경
                     } label: {
                         Text("Forgot password?")
                             .font(.footnote)
@@ -53,7 +47,10 @@ struct LoginView: View {
                             .padding(.trailing, 24)
                             .frame(maxWidth: .infinity, alignment: .trailing)
                     }
-
+                    .navigationDestination(isPresented: $navigateToForgotPassword) {
+                        ForgotPasswordView()
+                            .environmentObject(viewModel)
+                    }
 
                     if isLoading {
                         ProgressView()
@@ -65,37 +62,47 @@ struct LoginView: View {
                             Text("Log In")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.black)
+                                .foregroundColor(.white)
                                 .frame(width: 360, height: 44)
-                                .background(.white)
+                                .background(Color(red: 0/255, green: 56/255, blue: 101/255)) // #003865
                                 .cornerRadius(8)
                                 .padding(.vertical)
                         }
                     }
 
-                    Spacer()
-                    
-                    Spacer()
-
-                    NavigationLink {
-                        SignUpView()
-                    } label: {
+                    HStack {
                         Text("Don't have an account? ")
                             .font(.caption)
-                            .foregroundStyle(.black) +
+                            .foregroundColor(.black)
                         
-                        Text("Sign Up")
-                            .foregroundStyle(.white)
-                            .font(.caption)
-                            .bold()
+                        NavigationLink {
+                            SignUpView()
+                        } label: {
+                            Text("Sign Up")
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.white)
+                        }
                     }
+                    .padding(.bottom, 16)
+                    
+                    Spacer()
                 }
+                .padding(.top, 32)
             }
             .onAppear() {
                 viewModel.errorMessage = ""
             }
         }
-        .tint(.black)
+        .tint(.white)
     }
 }
 
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+            .previewLayout(.sizeThatFits)
+            .preferredColorScheme(.dark)
+            .environmentObject(AuthViewModel())
+    }
+}
