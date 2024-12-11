@@ -82,8 +82,8 @@ struct AdditionalProfileInfoView: View {
                             .font(.headline)
                             .frame(height: 50)
                             .frame(maxWidth: .infinity)
-                            .background(Color.white)
-                            .foregroundColor(.black)
+                            .background(Color(red: 0/255, green: 56/255, blue: 101/255))
+                            .foregroundColor(.white)
                             .cornerRadius(12)
                             .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
                     }
