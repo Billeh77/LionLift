@@ -7,9 +7,9 @@ struct SignUpView: View {
     @State private var password: String = ""
     @State private var fullName: String = ""
     @State private var errorMessage: String? = nil
-    @State private var navigateToLogin = false
     @State private var showHidePassword = false
-    @State private var navigationTag: String?
+    @State private var navigateToLogin = false
+    @State private var navigateToProfilePhotoSelector = false
 
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var viewModel: AuthViewModel
@@ -21,7 +21,6 @@ struct SignUpView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
-                    // Replace deprecated NavigationLink
                     Spacer()
 
                     Text("Create New Account")
@@ -73,7 +72,9 @@ struct SignUpView: View {
                                                nextFlightDateAndTime: "",
                                                nextFlightAirport: "",
                                                departing: false)
-                            navigationTag = "ProfilePhotoSelector"
+                            viewModel.didAuthenticateUser = true
+                            
+                            navigateToProfilePhotoSelector = true
                         } else {
                             viewModel.errorMessage = "Please use a valid @columbia.edu email address."
                         }
@@ -106,10 +107,9 @@ struct SignUpView: View {
                     }
                 }
             }
-            .navigationDestination(for: String.self) { tag in
-                if tag == "ProfilePhotoSelector" {
-                    ProfilePhotoSelectorView()
-                }
+            //`NavigationLin Link
+            .navigationDestination(isPresented: $navigateToProfilePhotoSelector) {
+                ProfilePhotoSelectorView()
             }
         }
     }
@@ -120,3 +120,4 @@ struct SignUpView: View {
         return emailPredicate.evaluate(with: email)
     }
 }
+
