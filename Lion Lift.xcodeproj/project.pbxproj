@@ -72,6 +72,8 @@
 		AF5B2FF32CFEF4C700711E9C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FF22CFEF4C700711E9C /* Constants.swift */; };
 		AF5B2FF52CFF152000711E9C /* FlightConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FF42CFF152000711E9C /* FlightConfirmationViewModel.swift */; };
 		AF5B2FF72CFF2FAC00711E9C /* CarpoolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5B2FF62CFF2FAC00711E9C /* CarpoolsViewModel.swift */; };
+		D96EB16F2D09D4F30065EAD3 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96EB16E2D09D4EF0065EAD3 /* LocationManager.swift */; };
+		D96EB1712D09D50E0065EAD3 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96EB1702D09D50A0065EAD3 /* WeatherManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -136,6 +138,8 @@
 		AF5B2FF22CFEF4C700711E9C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = "Lion Lift/Model/Constants.swift"; sourceTree = SOURCE_ROOT; };
 		AF5B2FF42CFF152000711E9C /* FlightConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlightConfirmationViewModel.swift; path = "Lion Lift/Model/FlightConfirmationViewModel.swift"; sourceTree = SOURCE_ROOT; };
 		AF5B2FF62CFF2FAC00711E9C /* CarpoolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarpoolsViewModel.swift; sourceTree = "<group>"; };
+		D96EB16E2D09D4EF0065EAD3 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		D96EB1702D09D50A0065EAD3 /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +261,8 @@
 		6877587E2CE67AEB003CA3E9 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				D96EB1702D09D50A0065EAD3 /* WeatherManager.swift */,
+				D96EB16E2D09D4EF0065EAD3 /* LocationManager.swift */,
 				687758862CE67CCE003CA3E9 /* View */,
 				687758852CE67CC7003CA3E9 /* ViewModel */,
 			);
@@ -517,6 +523,7 @@
 				687758952CE6815A003CA3E9 /* FlightSearchView.swift in Sources */,
 				0AA795BE2D07AFD40086D400 /* AdditionalProfileInfo.swift in Sources */,
 				1F80F10A2CE6ABD4005FB48E /* ProfileSettingsView.swift in Sources */,
+				D96EB16F2D09D4F30065EAD3 /* LocationManager.swift in Sources */,
 				0AA795BC2D07AFA30086D400 /* OtherUserProfileView.swift in Sources */,
 				AF5B2FD32CFEBF3F00711E9C /* User.swift in Sources */,
 				3F92536F2CF5152300B0DECF /* CustomComponents.swift in Sources */,
@@ -540,6 +547,7 @@
 				1F80F10C2CE6ABF1005FB48E /* ChangePasswordView.swift in Sources */,
 				6877588A2CE67CEA003CA3E9 /* ProfileView.swift in Sources */,
 				3F9253702CF5152300B0DECF /* LoginView.swift in Sources */,
+				D96EB1712D09D50E0065EAD3 /* WeatherManager.swift in Sources */,
 				AF5B2FD82CFEC3F800711E9C /* Request.swift in Sources */,
 				AF5B2FCB2CFEBF3F00711E9C /* CarpoolsView.swift in Sources */,
 				3F8BE20C2D03A80900113E6B /* EmailUsView.swift in Sources */,
@@ -705,6 +713,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"We need your location to display the map.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -737,6 +746,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"We need your location to display the map.\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
