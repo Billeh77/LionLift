@@ -194,7 +194,7 @@ struct EditProfileSheet: View {
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .frame(width: 360, height: 44)
-                        .background(Color(red: 0.63, green: 0.82, blue: 0.96))
+                        .background(Color(red: 0/255, green: 56/255, blue: 101/255))
                         .cornerRadius(8)
                         .padding(.vertical)
                 }

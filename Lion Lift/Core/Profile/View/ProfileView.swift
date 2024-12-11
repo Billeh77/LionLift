@@ -9,6 +9,7 @@ struct ProfileView: View {
     @State private var customerSupport = false
     @EnvironmentObject var viewModel: AuthViewModel
     private let accentColor = Color.blue.opacity(0.8)
+    private let buttonBackgroundColor = Color(hex: "#9BCBEB")
     
     var body: some View {
         NavigationStack {
@@ -17,6 +18,8 @@ struct ProfileView: View {
                     headerSection
                     userDetailsCard
                     upcomingFlightsSection
+                    
+                    actionButtons
                     
                     Spacer()
                 }
@@ -31,7 +34,7 @@ struct ProfileView: View {
         }
     }
     
-    // header with welcome [name] and profile picture
+    // header with welcome  [name] and profile picture
     private var headerSection: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -141,34 +144,59 @@ struct ProfileView: View {
         }
     }
     
+    private var actionButtons: some View {
+        HStack(spacing: 16) {
+            Button {
+                customerSupport.toggle()
+            } label: {
+                HStack {
+                    Image(systemName: "phone.bubble.fill")
+                        .foregroundColor(.white)
+                    Text("Customer Support")
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                }
+                .padding()
+                .background(buttonBackgroundColor)
+                .cornerRadius(10)
+                .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
+            }
+            .fullScreenCover(isPresented: $customerSupport) {
+                CustomerSupportView()
+            }
+            
+            Button {
+                logoutHit.toggle()
+            } label: {
+                HStack {
+                    Image(systemName: "rectangle.portrait.and.arrow.right.fill")
+                        .foregroundColor(.white)
+                    Text("Log Out")
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                }
+                .padding()
+                .background(Color.red)
+                .cornerRadius(10)
+                .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
+            }
+            .alert("Log Out", isPresented: $logoutHit) {
+                Button("Log Out", role: .destructive) {
+                    viewModel.signOut()
+                }
+                Button("Cancel", role: .cancel) {}
+            }
+        }
+        .padding(.top, 20)
+    }
+    
     // toolbar
     private var toolbarContent: some ToolbarContent {
         Group {
             ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    customerSupport.toggle()
-                } label: {
-                    Image(systemName: "phone.bubble.fill")
-                        .foregroundColor(accentColor)
-                }
-                .fullScreenCover(isPresented: $customerSupport) {
-                    CustomerSupportView()
-                }
             }
             
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    logoutHit.toggle()
-                } label: {
-                    Image(systemName: "rectangle.portrait.and.arrow.right.fill")
-                        .foregroundColor(.red)
-                }
-                .alert("Log Out", isPresented: $logoutHit) {
-                    Button("Log Out", role: .destructive) {
-                        viewModel.signOut()
-                    }
-                    Button("Cancel", role: .cancel) {}
-                }
             }
         }
     }
@@ -198,6 +226,23 @@ struct ProfileView: View {
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
         return formatter.string(from: date)
+    }
+}
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.replacingOccurrences(of: "#", with: "")
+        let scanner = Scanner(string: hex)
+        var hexInt: UInt64 = 0
+        scanner.scanHexInt64(&hexInt)
+        
+        self.init(
+            .sRGB,
+            red: Double((hexInt & 0xFF0000) >> 16) / 255.0,
+            green: Double((hexInt & 0x00FF00) >> 8) / 255.0,
+            blue: Double(hexInt & 0x0000FF) / 255.0,
+            opacity: 1.0
+        )
     }
 }
 

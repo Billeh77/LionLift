@@ -124,14 +124,29 @@ struct ChatBubble: View {
     let isUser: Bool
 
     var body: some View {
-        Text(text)
-            .padding()
-            .foregroundColor(isUser ? .white : .black)
-            .background(isUser ? Color.blue : Color.gray.opacity(0.2))
-            .cornerRadius(16)
-            .frame(maxWidth: .infinity, alignment: isUser ? .trailing : .leading)
+        HStack {
+            if !isUser {
+                Image(systemName: "person.fill") 
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .padding(.leading, 8)
+            }
+
+            Text(text)
+                .padding()
+                .foregroundColor(isUser ? .black : .black)
+                .background(isUser ? Color(red: 155/255, green: 203/255, blue: 235/255) : Color.gray.opacity(0.2))
+                .cornerRadius(16)
+                .frame(maxWidth: .infinity, alignment: isUser ? .trailing : .leading)
+            
+            if isUser {
+                Spacer()
+            }
+        }
     }
 }
+
 
 
 struct ChatbotView_Previews: PreviewProvider {
