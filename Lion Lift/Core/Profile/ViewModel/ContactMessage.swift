@@ -2,7 +2,7 @@
 import Foundation
 import Firebase
 import FirebaseFirestore
-import FirebaseAuth // 추가된 부분
+import FirebaseAuth
 
 struct ContactMessage: Identifiable, Codable {
     @DocumentID var id: String?
