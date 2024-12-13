@@ -14,6 +14,15 @@ class CarpoolsViewModel: ObservableObject {
     @Published var requests = [Request]()
     var matchDocumentReference: DocumentReference?
     
+    var uniqueMatches: [Match] {
+        var seenIds = Set<String>()
+        return matches.filter { match in
+            guard !seenIds.contains(match.id ?? " ") else { return false }
+            seenIds.insert(match.id ?? " ")
+            return true
+        }
+    }
+    
     init() {
         fetchMatches()
         fetchRequests()

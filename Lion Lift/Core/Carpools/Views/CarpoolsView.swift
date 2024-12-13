@@ -90,8 +90,8 @@ extension CarpoolsView {
     var matches: some View {
         VStack {
             if let currentuid = AuthViewModel.shared.userSession?.uid {
-                if !viewModel.matches.filter({ $0.uid != currentuid }).isEmpty {
-                    ForEach(viewModel.matches) { match in
+                if !viewModel.uniqueMatches.filter({ $0.uid != currentuid }).isEmpty {
+                    ForEach(viewModel.uniqueMatches) { match in
                         
                         if currentuid != match.uid {
                             MatchRowView(match: match)
@@ -106,6 +106,9 @@ extension CarpoolsView {
                     Spacer()
                 }
             }
+        }
+        .onAppear {
+            viewModel.fetchMatches()
         }
     }
 }
